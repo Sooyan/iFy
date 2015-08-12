@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="GuiderView">
+        <attr name="icon" format="reference"></attr>
+        <attr name="color" format="color"></attr>
+        <attr name="text" format="string"></attr>
+        <attr name="textSize" format="dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="PathImage">
+        <attr name="shape">
+            <enum name="oval" value="1" />
+            <enum name="circle" value="2" />
+            <enum name="triangle" value="3" />
+            <enum name="rect" value="4" />
+            <enum name="roundRect" value="5" />
+        </attr>
+        <attr name="stretchMod">
+            <enum name="applyWidth" value="1" />
+            <enum name="applyHeight" value="2" />
+        </attr>
+        <attr name="filterColor" format="color" />
+        <attr name="picked" format="boolean" />
+        <attr name="pickEnable" format="boolean" />
+        <attr name="pressEnable" format="boolean" />
+        <attr name="filterEnable" format="boolean" />
+    </declare-styleable>
+
+    <attr name="centered" format="boolean" />
+    <attr name="selectedColor" format="color" />
+    <attr name="strokeWidth" format="dimension" />
+    <attr name="unselectedColor" format="color" />
+
+    <declare-styleable name="CirclePageIndicator">
+        <attr name="centered" />
+        <attr name="fillColor" format="color" />
+        <attr name="pageColor" format="color" />
+        <attr name="android:orientation" />
+        <attr name="radius" format="dimension" />
+        <attr name="snap" format="boolean" />
+        <attr name="strokeColor" format="color" />
+        <attr name="strokeWidth" />
+        <attr name="android:background" />
+    </declare-styleable>
+    <declare-styleable name="PagerSlidingTabStrip">
+        <attr name="indicatorColor" format="color" />
+        <attr name="underlineColor" format="color" />
+        <attr name="dividerColor" format="color" />
+        <attr name="indicatorHeight" format="dimension" />
+        <attr name="underlineHeight" format="dimension" />
+        <attr name="dividerPadding" format="dimension" />
+        <attr name="tabPaddingLeftRight" format="dimension" />
+        <attr name="scrollOffset" format="dimension" />
+        <attr name="tabBackground" format="reference" />
+        <attr name="shouldExpand" format="boolean" />
+        <attr name="textAllCaps" format="boolean" />
+        <attr name="tabTextSize" format="dimension" />
+        <attr name="tabTextColor" format="color" />
+    </declare-styleable>
+    <declare-styleable name="RecyclerPagerSlidingTab">
+        <attr name="tabColor" format="color" />
+        <attr name="divColor" format="color" />
+        <attr name="tabWH" format="dimension" />
+        <attr name="divWH" format="dimension" />
+        <attr name="orientation">
+            <enum name="vertical" value="1" />
+            <enum name="horizontal" value="2" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="LoadingLayout">
+        <attr name="loadingText" format="string" />
+        <attr name="loadingTextColor" format="color" />
+        <attr name="showLoadingText" format="boolean" />
+        <attr name="loadingErrorText" format="string" />
+        <attr name="loadingErrorTextColor" format="color" />
+        <attr name="showLoadingErrorText" format="boolean" />
+        <attr name="reLoadingEnable" format="boolean" />
+        <attr name="firstState">
+            <enum name="loading" value="1" />
+            <enum name="loadingError" value="2" />
+            <enum name="loadingSucess" value="3" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="ExpandPlusListView">
+        <attr name="groupExpandAble" format="boolean"></attr>
+        <attr name="groupCloseAble" format="boolean"></attr>
+        <attr name="headTagViewClickAble" format="boolean"></attr>
+    </declare-styleable>
+    <declare-styleable name="PullToRefresh">
+
+        <!-- A drawable to use as the background of the Refreshable View -->
+        <attr name="ptrRefreshableViewBackground" format="reference|color" />
+
+        <!-- A drawable to use as the background of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderBackground" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextColor" format="reference|color" />
+
+        <!-- Text Color of the Header and Footer Loading Views Sub Header -->
+        <attr name="ptrHeaderSubTextColor" format="reference|color" />
+
+        <!-- Mode of Pull-to-Refresh that should be used -->
+        <attr name="ptrMode">
+            <flag name="disabled" value="0x0" />
+            <flag name="pullFromStart" value="0x1" />
+            <flag name="pullFromEnd" value="0x2" />
+            <flag name="both" value="0x3" />
+            <flag name="manualOnly" value="0x4" />
+
+            <!-- These last two are depreacted -->
+            <flag name="pullDownFromTop" value="0x1" />
+            <flag name="pullUpFromBottom" value="0x2" />
+        </attr>
+
+        <!-- Whether the Indicator overlay(s) should be used -->
+        <attr name="ptrShowIndicator" format="reference|boolean" />
+
+        <!-- Drawable to use as Loading Indicator. Changes both Header and Footer. -->
+        <attr name="ptrDrawable" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableStart" format="reference" />
+
+        <!-- Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. -->
+        <attr name="ptrDrawableEnd" format="reference" />
+
+        <!-- Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. -->
+        <attr name="ptrOverScroll" format="reference|boolean" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views -->
+        <attr name="ptrHeaderTextAppearance" format="reference" />
+
+        <!-- Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header -->
+        <attr name="ptrSubHeaderTextAppearance" format="reference" />
+
+        <!-- Style of Animation should be used displayed when pulling. -->
+        <attr name="ptrAnimationStyle">
+            <flag name="rotate" value="0x0" />
+            <flag name="flip" value="0x1" />
+        </attr>
+
+        <!-- Whether the user can scroll while the View is Refreshing -->
+        <attr name="ptrScrollingWhileRefreshingEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
+        	able to scroll while refreshing, and behaves better. It acheives this by adding
+        	Header and/or Footer Views to the ListView.
+        -->
+        <attr name="ptrListViewExtrasEnabled" format="reference|boolean" />
+
+        <!--
+        	Whether the Drawable should be continually rotated as you pull. This only
+        	takes effect when using the 'Rotate' Animation Style.
+        -->
+        <attr name="ptrRotateDrawableWhilePulling" format="reference|boolean" />
+
+        <!-- BELOW HERE ARE DEPRECEATED. DO NOT USE. -->
+        <attr name="ptrAdapterViewBackground" format="reference|color" />
+        <attr name="ptrDrawableTop" format="reference" />
+        <attr name="ptrDrawableBottom" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="ArrowView">
+        <attr name="direction">
+            <enum name="left" value="0" />
+            <enum name="top" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+        </attr>
+        <attr name="lineColor" format="reference|color"></attr>
+        <attr name="strokeWidth" />
+        <attr name="tagSpacing" format="dimension"></attr>
+    </declare-styleable>
+    <declare-styleable name="ToggleButton">
+        <attr name="borderWidth" format="dimension"></attr>
+        <attr name="offBorderColor" format="reference|color"></attr>
+        <attr name="offColor" format="reference|color"></attr>
+        <attr name="onColor" format="reference|color"></attr>
+        <attr name="spotColor" format="reference|color"></attr>
+        <attr name="animate" format="reference|boolean"></attr>
+    </declare-styleable>
+    <declare-styleable name="NumberProgressBar">
+        <attr name="progress_current" format="integer" />
+        <attr name="progress_max" format="integer" />
+        <attr name="progress_unreached_color" format="color" />
+        <attr name="progress_reached_color" format="color" />
+        <attr name="progress_reached_bar_height" format="dimension" />
+        <attr name="progress_unreached_bar_height" format="dimension" />
+        <attr name="progress_text_size" format="dimension" />
+        <attr name="progress_text_color" format="color" />
+        <attr name="progress_text_offset" format="dimension" />
+        <attr name="progress_text_visibility" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="1" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="Themes">
+        <attr name="numberProgressBarStyle" format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge">
+            <flag name="left" value="1" />
+            <flag name="right" value="2" />
+            <flag name="top" value="4" />
+            <flag name="bottom" value="8" />
+        </attr>
+        <attr name="leftEdgeSwipeOffset" format="dimension" />
+        <attr name="rightEdgeSwipeOffset" format="dimension" />
+        <attr name="topEdgeSwipeOffset" format="dimension" />
+        <attr name="bottomEdgeSwipeOffset" format="dimension" />
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0" />
+            <enum name="pull_out" value="1" />
+        </attr>
+        <attr name="clickToClose" format="boolean" />
+    </declare-styleable>
+    
+    <declare-styleable name="ExtViewPager">
+        <attr name="scrollAble" format="boolean"/>
+    </declare-styleable>
+    
+    <declare-styleable name="IndexView">
+        <attr name="barBgColor" format="reference|color"></attr>
+        <attr name="barTextColor" format="reference|color"></attr>
+        <attr name="barTextSize" format="dimension"></attr>
+        <attr name="barBgMod" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="always" value="1"/>
+            <enum name="ontouch" value="2"/>
+        </attr>
+        <attr name="barFloatMod" format="enum">
+            <enum name="none" value="0"/>
+            <enum name="always" value="1"/>
+            <enum name="ontouch" value="2"/>
+        </attr>
+        <attr name="type" format="enum">
+            <enum name="all" value="0"/>
+            <enum name="judge" value="1"/>
+        </attr>
+    </declare-styleable>
+    
+    <declare-styleable name="PullToZoomView">
+        <attr name="headerView" format="reference" />
+        <attr name="contentView" format="reference" />
+        <attr name="zoomView" format="reference" />
+        <attr name="isHeaderParallax" format="boolean" />
+    </declare-styleable>
+    
+    <declare-styleable name="PullScrollView">
+        <attr name="header" format="reference" />
+        <attr name="headerHeight" format="dimension" />
+        <attr name="headerVisibleHeight" format="dimension" />
+    </declare-styleable>
+    
+    <declare-styleable name="StickyScrollView">
+        <attr name="stuckShadowHeight" format="dimension" />
+        <attr name="stuckShadowDrawable" format="reference" />
+    </declare-styleable>
+    
+    <declare-styleable name="AutoDrawableTextView">
+        <attr name="left_height" format="dimension" />
+        <attr name="left_width" format="dimension" />
+        <attr name="right_height" format="dimension" />
+        <attr name="right_width" format="dimension" />
+        <attr name="top_height" format="dimension" />
+        <attr name="top_width" format="dimension" />
+        <attr name="bottom_height" format="dimension" />
+        <attr name="bottom_width" format="dimension" />
+    </declare-styleable>
+    
+</resources>
