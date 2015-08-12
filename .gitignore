@@ -1,0 +1,29 @@
+#.DS_Store
+*.DS_Store
+
+#txt files
+*.txt
+
+#property files
+*.properties
+
+#built application files
+*.apk
+*.ap_
+
+#files for vm
+*.dex
+
+#java .class files
+*.class
+
+#java .classpath files
+*.classpath
+
+#somethis for project
+*.project
+
+#generated files
+bin/
+gen/
+.settings/
