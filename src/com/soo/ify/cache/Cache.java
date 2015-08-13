@@ -36,4 +36,5 @@ public interface Cache <K, V> {
     public void flush();
     
     public void close();
+    
 }
