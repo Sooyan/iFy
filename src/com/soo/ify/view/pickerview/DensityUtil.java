@@ -1,0 +1,25 @@
+package com.soo.ify.view.pickerview;
+
+import android.content.Context;
+
+public class DensityUtil {
+	private static float scale;
+
+	/**
+	 * ??¹æ???????ºç?????è¾¨ç??ä»? dp ??????ä½? è½????ä¸? px(???ç´?)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+		if (scale == 0)
+			scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * ??¹æ???????ºç?????è¾¨ç??ä»? px(???ç´?) ??????ä½? è½????ä¸? dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		if (scale == 0)
+			scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+}
