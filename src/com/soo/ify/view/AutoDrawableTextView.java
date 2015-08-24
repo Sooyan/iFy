@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.soo.ify.R;
@@ -53,7 +52,6 @@ public class AutoDrawableTextView extends TextView {
         rightHeight = a.getDimensionPixelSize(R.styleable.AutoDrawableTextView_right_height, 0);
         bottomWidth = a.getDimensionPixelSize(R.styleable.AutoDrawableTextView_bottom_width, 0);
         bottomHeight = a.getDimensionPixelSize(R.styleable.AutoDrawableTextView_bottom_height, 0);
-        Log.d("--->", "lw:" + leftWidth + " lh:" + leftHeight + " tw:" + topWidth + " th:" + topHeight + " bw:" + bottomWidth + "  bh:" + bottomHeight);
         
         
         // 获取各个方向的图片，按照：左-上-右-下 的顺序存于数组中
