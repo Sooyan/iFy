@@ -101,6 +101,9 @@ public class ExpandPlusListView extends ExpandableListView implements
         }
 
         this.setSelectedGroup(groupPosition);
+        if (onGroupClickListener != null) {
+            onGroupClickListener.onGroupClick(this, mHeaderView, groupPosition, mAdapter.getGroupId(groupPosition));
+        }
     }
     
     @Override
