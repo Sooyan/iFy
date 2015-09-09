@@ -403,6 +403,8 @@ public class ComplexPageIndicator extends View implements PageIndicator {
                     if (lastX > getWidth()) {
                         lastX = 0;
                     }
+                    int position = computeDragFreezPosition();
+                    text = viewPager.getAdapter().getPageTitle(position);
                     invalidate();
                 }
                 break;
