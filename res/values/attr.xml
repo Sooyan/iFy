@@ -269,4 +269,24 @@
         <attr name="bottom_width" format="dimension" />
     </declare-styleable>
     
+    <declare-styleable name="ComplexPageIndicator">
+        <attr name="indicator_Width" format="dimension"/>
+        <attr name="indicator_Height" format="dimension"/>
+        <attr name="indicator_Color" format="color"/>
+        <attr name="ball_radius" format="dimension"/>
+        <attr name="ball_Color" format="color"/>
+        <attr name="ballarm_width" format="dimension"/>
+        <attr name="ballarm_height" format="dimension"/>
+        <attr name="ballarm_color" format="color"/>
+        <attr name="coodinate_Size" format="dimension"/>
+        <attr name="coodinate_Color" format="color"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_color" format="color"/>
+        <attr name="mod" format="enum">
+            <enum name="below" value="1"/>
+            <enum name="above" value="2"/>
+        </attr>
+        <attr name="smooth" format="boolean"/>
+    </declare-styleable>
+    
 </resources>
