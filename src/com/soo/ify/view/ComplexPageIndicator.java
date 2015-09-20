@@ -2,6 +2,7 @@ package com.soo.ify.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -31,7 +33,7 @@ public class ComplexPageIndicator extends View implements PageIndicator {
     
     private float textSize;
     private int textColor;
-    private CharSequence text;
+    private CharSequence text = "no title";
     private Paint textPaint;
     
     private float ballRadius;
@@ -142,7 +144,7 @@ public class ComplexPageIndicator extends View implements PageIndicator {
         } else {
             int count = viewPager.getAdapter().getCount();
             width = (int) (getPaddingLeft() + getPaddingRight() + count * indicatorWidth);
-            if (!TextUtils.isEmpty(text)) {
+            if (text != null) {
                 int textWidth = computeTextWidth();
                 width = Math.max(width, textWidth);
             }
@@ -161,7 +163,7 @@ public class ComplexPageIndicator extends View implements PageIndicator {
             height = specSize;
         } else {
             int textHeight = 0;
-            if (!TextUtils.isEmpty(text)) {
+            if (text != null) {
                 textHeight = computeTextHeight();
             }
             height = (int) (getPaddingTop() + getPaddingBottom() + Math.max(indicatorHeigth, ballarmHeight) + textHeight + ballRadius * 2);
@@ -173,13 +175,13 @@ public class ComplexPageIndicator extends View implements PageIndicator {
     }
     
     private int computeTextWidth() {
-        return (int) textPaint.measureText(text.toString());
+        return (int) textPaint.measureText(text.toString()) + 5;
     }
     
     private int computeTextHeight() {
         Rect bounds = new Rect();
         textPaint.getTextBounds(text.toString(), 0, text.length(), bounds);
-        return bounds.height();
+        return bounds.height() + 5;
     }
     
     @Override
@@ -242,8 +244,9 @@ public class ComplexPageIndicator extends View implements PageIndicator {
             canvas.drawRect(left, top, right, bottom, indicatorPaint);
             canvas.drawLine(ballarmStartX, ballarmStartY, ballarmStopX, ballarmStopY, ballarmPaint);
             canvas.drawCircle(cX, cY, ballRadius, ballPaint);
-            
-            if (!TextUtils.isEmpty(text) && (currentScrollState == ViewPager.SCROLL_STATE_IDLE || currentScrollState == ViewPager.SCROLL_STATE_SETTLING)) {
+            Log.d("--->", "text:" + text + "  currentScrollState:" + currentScrollState);
+
+            if (!TextUtils.isEmpty(text)) {
                 int textWidth = computeTextWidth();
                 float tX;
                 float tY;
@@ -347,7 +350,7 @@ public class ComplexPageIndicator extends View implements PageIndicator {
             
             canvas.drawLine(ballarmStartX, ballarmStartY, ballarmStopX, ballarmStopY, ballarmPaint);
             canvas.drawCircle(cX, cY, ballRadius, ballPaint);
-            if (!TextUtils.isEmpty(text) && (currentScrollState == ViewPager.SCROLL_STATE_IDLE || currentScrollState == ViewPager.SCROLL_STATE_SETTLING)) {
+            if (!TextUtils.isEmpty(text)) {
                 int textWidth = computeTextWidth();
                 float tX;
                 float tY;
@@ -372,8 +375,6 @@ public class ComplexPageIndicator extends View implements PageIndicator {
                     tX = width - textWidth;
                 }
                 canvas.drawText(text, 0, text.length(), tX, tY, textPaint);
-                
-                
             }
         }
     }
@@ -480,6 +481,8 @@ public class ComplexPageIndicator extends View implements PageIndicator {
         if (view.getAdapter() == null) {
             throw new IllegalStateException("ViewPager does not have adapter instance.");
         }
+        
+        
         this.viewPager = view;
         this.viewPager.setOnPageChangeListener(this);
         invalidate();
@@ -512,5 +515,4 @@ public class ComplexPageIndicator extends View implements PageIndicator {
     public void notifyDataSetChanged() {
         invalidate();
     }
-    
 }

@@ -21,7 +21,6 @@ import com.soo.ify.common.util.HanziToPinyin.Token;
 
 public class TextUtils {
     
-    
     /** 
      * Use fixS to fix s , if s is empty(s == null || s.lengtt() == 0);
      */
