@@ -79,10 +79,10 @@ public class SimpleMultipartEntity implements HttpEntity {
         try {
             out.write(("Content-Disposition: form-data; name=\"" +key+"\"\r\n\r\n").getBytes());
             out.write(value.getBytes());
-            out.write(("\r\n--" + boundary + "\r\n").getBytes());
-//            if (!isLast) {
-//            }
-//            out.flush();
+            if (!isLast) {
+                out.write(("\r\n--" + boundary + "\r\n").getBytes());
+            }
+            out.flush();
         } catch (final IOException e) {
             e.printStackTrace();
         }
