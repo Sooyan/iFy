@@ -289,4 +289,14 @@
         <attr name="smooth" format="boolean"/>
     </declare-styleable>
     
+    <declare-styleable name="WaveView">
+        <attr name="circleColor_normal" format="color"/>
+        <attr name="circleColor_press" format="color"/>
+        <attr name="circleColor_outside" format="color"/>
+        <attr name="circleRadius" format="dimension"/>
+        <attr name="circleDrawable" format="reference"/>
+        <attr name="waveColor" format="color"/>
+        <attr name="waveStrokeWidth" format="dimension"/>
+    </declare-styleable>
+    
 </resources>
