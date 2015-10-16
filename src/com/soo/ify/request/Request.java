@@ -79,6 +79,7 @@ public class Request<Result> implements Runnable, Comparable<Request<Result>>{
     private Priority priority;
     private Callback<Result> callback;
     private Parser<Result> parser;
+    private boolean async;
     
     private StringBuilder tracker;
     
@@ -236,15 +237,21 @@ public class Request<Result> implements Runnable, Comparable<Request<Result>>{
         return null;
     }
     
+    public boolean isAsync() {
+        return async;
+    }
+    
     public final Request<Result> request(boolean isAsync, Callback<Result> callback) {
         this.tracker = new StringBuilder(getUrl());
         if (isAsync) {
             AsyncCallback<Result> asyncCallback = new AsyncCallback<Result>(requestContext.getLooper(), callback);
+            this.async = isAsync;
             this.callback = asyncCallback;
             
             appendTracker("push into thread pool");
             requestContext.commitRequest(this);
         } else {
+            this.async = isAsync;
             this.callback = callback;
             run();
         }

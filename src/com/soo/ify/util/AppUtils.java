@@ -83,4 +83,14 @@ public class AppUtils {
         return imgDirs;
     }
 
+    private static String getAppInfo(Context context) {
+        try {
+            String pkName = context.getPackageName();
+            String versionName = context.getPackageManager().getPackageInfo(pkName, 0).versionName;
+            int versionCode = context.getPackageManager().getPackageInfo(pkName, 0).versionCode;
+            return pkName + "   " + versionName + "  " + versionCode;
+        } catch (Exception e) {
+        }
+        return null;
+    }
 }
