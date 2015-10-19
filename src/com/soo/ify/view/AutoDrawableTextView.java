@@ -53,8 +53,13 @@ public class AutoDrawableTextView extends TextView {
         bottomWidth = a.getDimensionPixelSize(R.styleable.AutoDrawableTextView_bottom_width, 0);
         bottomHeight = a.getDimensionPixelSize(R.styleable.AutoDrawableTextView_bottom_height, 0);
         
+        refreshDrawables();
         
-        // 获取各个方向的图片，按照：左-上-右-下 的顺序存于数组中
+        a.recycle();
+    }
+    
+    private void refreshDrawables() {
+     // 获取各个方向的图片，按照：左-上-右-下 的顺序存于数组中
         Drawable[] drawables = getCompoundDrawables();
         int dir = 0;
         // 0-left; 1-top; 2-right; 3-bottom;
@@ -64,8 +69,6 @@ public class AutoDrawableTextView extends TextView {
         }
         // 将图片放回到TextView中
         setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3]);
-        
-        a.recycle();
     }
 
     /**
@@ -105,5 +108,16 @@ public class AutoDrawableTextView extends TextView {
         if (width != 0 && height != 0) {
             d.setBounds(0, 0, width, height);
         }
+    }
+    
+    @Override
+    public void setCompoundDrawables(Drawable left, Drawable top,Drawable right, Drawable bottom) {
+        
+        setImageSize(left, 0);
+        setImageSize(top, 1);
+        setImageSize(right, 2);
+        setImageSize(bottom, 3);
+        
+        super.setCompoundDrawables(left, top, right, bottom);
     }
 }

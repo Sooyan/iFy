@@ -266,7 +266,11 @@ public class WaveView extends View implements Handler.Callback {
         return distance <= circleRadius;
     }
     
-    private void pushWave(Wave wave) {
+    public void pushWave() {
+        pushWave(getWave());
+    }
+    
+    public void pushWave(Wave wave) {
         if (wave != null) {
             aliveWaves.add(wave);
             drawRunner.start();
