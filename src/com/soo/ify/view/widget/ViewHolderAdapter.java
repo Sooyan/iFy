@@ -15,6 +15,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
        
        public Context context;
        public View itemView;
+       public BaseAdapter adapter;
         
         public ViewHolder(View itemView) {
             this.itemView = itemView;
@@ -137,6 +138,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
             t = (T) obj;
         }
         viewHolder.context = this.context;
+        viewHolder.adapter = this;
         viewHolder.onBindNewData(t, position);
         
         return convertView;
