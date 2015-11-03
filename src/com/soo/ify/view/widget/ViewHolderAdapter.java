@@ -15,7 +15,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
        
        public Context context;
        public View itemView;
-       public BaseAdapter adapter;
+       public ViewHolderAdapter<T, ? extends ViewHolderAdapter.ViewHolder<T>> adapter;
         
         public ViewHolder(View itemView) {
             this.itemView = itemView;

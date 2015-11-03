@@ -1,5 +1,7 @@
 package com.soo.ify.view;
 
+import com.soo.ify.util.AsyncUtils;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -71,8 +73,29 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         super.setScaleType(ScaleType.MATRIX);
         mGestureDetector = new GestureDetector(context,
                 new SimpleOnGestureListener() {
+            
+            private boolean haSingleTapUp;
+            
+                    @Override
+                    public boolean onSingleTapUp(MotionEvent e) {
+                        haSingleTapUp = !haSingleTapUp;
+                        AsyncUtils.postDelayRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (haSingleTapUp) {
+                                    haSingleTapUp = false;
+                                    if (onClickListener != null) {
+                                        onClickListener.onClick(ZoomImageView.this);
+                                    }
+                                }
+                            }
+                        }, 300);
+                        return true;
+                    }
+
                     @Override
                     public boolean onDoubleTap(MotionEvent e) {
+                        haSingleTapUp = false;
                         if (isAutoScale == true)
                             return true;
 
@@ -346,6 +369,13 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         }
 
         return true;
+    }
+    
+    private OnClickListener onClickListener;
+    
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        this.onClickListener = l;
     }
 
     /**
