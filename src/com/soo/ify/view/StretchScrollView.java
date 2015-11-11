@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,10 +117,8 @@ public class StretchScrollView extends ScrollView {
                 int deltaY = (int) (mTouchY - nowY);
                 mTouchY = nowY;
                 if (isNeedMove()) {
-                    Log.d("--->", "isNeedMove:" + isNeedMove());
                     int offset = mChildRootView.getScrollY();
                     if (offset < MAX_SCROLL_HEIGHT && offset > -MAX_SCROLL_HEIGHT) {
-                        Log.d("--->", "hahddd:");
                         mChildRootView.scrollBy(0, (int) (deltaY * SCROLL_RATIO));
                         mTouchStop = false;
                     }

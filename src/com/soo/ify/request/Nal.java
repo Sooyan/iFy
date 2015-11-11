@@ -62,7 +62,7 @@ public final class Nal {
         contentValues.clear();
         return this;
     }
-
+    
     public String value() {
         if (host == null) {
             throw new IllegalArgumentException("host must not be null");

@@ -59,10 +59,7 @@ public class AsyncUtils {
     public static void postObject(Object obj, Handler.Callback callback, long delayTime) {
         if (obj != null && callback != null) {
             InnerCallback.putOC(obj, callback);
-            if (obj != null && callback != null) {
-                InnerCallback.putOC(obj, callback);
-                executeRunnable(new InnerRunnable(handler, obj, delayTime));
-            }
+            executeRunnable(new InnerRunnable(handler, obj, delayTime));
         }
     }
     
