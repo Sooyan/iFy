@@ -31,7 +31,7 @@ public class AppUtils {
         
         ContentResolver cr = context.getContentResolver();
         Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = cr.query(uri, null, null, null, null);
+        Cursor cursor = cr.query(uri, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC");
         while (cursor.moveToNext()) {
             
 //            int i1 = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME);
