@@ -351,4 +351,10 @@ public class IndexView extends View {
         });
     }
     
+    public void removeTextViewFromWindow() {
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        if (floatView != null) {
+            wm.removeViewImmediate(floatView);
+        }
+    }
 }
