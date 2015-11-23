@@ -15,6 +15,33 @@ import android.provider.MediaStore;
  */
 public class AppUtils {
     
+    /**根据文件名删除SharedPreferences的文件
+     * @param context 应用上下文
+     * @param name SharedPreferences文件名
+     * @return SharedPreferences的文件对象
+     */
+    public static void deleteSharedPreferences(Context context, String name) {
+        File file = getSharedPreferencesFile(context, name);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+    
+    /**根据文件名获取SharedPreferences的文件
+     * @param context 应用上下文
+     * @param name SharedPreferences文件名
+     * @return SharedPreferences的文件对象
+     */
+    public static File getSharedPreferencesFile(Context context, String name) {
+        ArgsUtils.notNull(context, "context");
+        ArgsUtils.notNull(name, "name");
+        if (!name.endsWith(".xml")) {
+            name += ".xml";
+        }
+        String packageName = context.getPackageName();
+        return new File("/data/data/" + packageName + "/shared_prefs/" + name);
+    }
+    
     public interface OnBindHandler<T> {
         T onBind(Cursor cursor);
     }

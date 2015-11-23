@@ -5,4 +5,8 @@
     <item type="id" name="webview" />
     <item type="id" name="scrollview" />
     <!-- ptr -->
+    
+    <!-- qrh -->
+    <item type="id" name="scroll_threshold_key"/>
+    <!-- qrh -->
 </resources>
