@@ -108,7 +108,7 @@ public class PullToRefreshWebView extends PullToRefreshBase<WebView> {
 	}
 
 	@Override
-	protected boolean isReadyForPullStart() {
+	public boolean isReadyForPullStart() {
 		return mRefreshableView.getScrollY() == 0;
 	}
 

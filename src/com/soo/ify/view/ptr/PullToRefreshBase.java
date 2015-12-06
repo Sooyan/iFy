@@ -690,7 +690,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	 * @return true if the View is currently the correct state (for example, top
 	 *         of a ListView)
 	 */
-	protected abstract boolean isReadyForPullStart();
+	public abstract boolean isReadyForPullStart();
 
 	/**
 	 * Called by {@link #onRestoreInstanceState(Parcelable)} so that derivative

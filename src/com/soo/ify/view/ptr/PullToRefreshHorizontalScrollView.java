@@ -63,7 +63,7 @@ public class PullToRefreshHorizontalScrollView extends PullToRefreshBase<Horizon
 	}
 
 	@Override
-	protected boolean isReadyForPullStart() {
+	public boolean isReadyForPullStart() {
 		return mRefreshableView.getScrollX() == 0;
 	}
 

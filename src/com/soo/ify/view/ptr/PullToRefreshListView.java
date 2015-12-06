@@ -188,7 +188,7 @@ public class PullToRefreshListView extends PullToRefreshAdapterViewBase<ListView
 	}
 	
 	@Override
-	protected boolean isReadyForPullStart() {
+	public boolean isReadyForPullStart() {
 	    final Adapter adapter = mRefreshableView.getAdapter();
 	    
 

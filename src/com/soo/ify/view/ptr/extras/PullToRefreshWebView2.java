@@ -94,7 +94,7 @@ public class PullToRefreshWebView2 extends PullToRefreshWebView {
 	}
 
 	@Override
-	protected boolean isReadyForPullStart() {
+	public boolean isReadyForPullStart() {
 		// Call Javascript...
 		getRefreshableView().loadUrl(DEF_JS_READY_PULL_DOWN_CALL);
 

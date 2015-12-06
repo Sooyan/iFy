@@ -304,7 +304,7 @@ public abstract class PullToRefreshAdapterViewBase<T extends AbsListView> extend
 		mShowIndicator = a.getBoolean(R.styleable.PullToRefresh_ptrShowIndicator, !isPullToRefreshOverScrollEnabled());
 	}
 
-	protected boolean isReadyForPullStart() {
+	public boolean isReadyForPullStart() {
 		return isFirstItemVisible();
 	}
 
