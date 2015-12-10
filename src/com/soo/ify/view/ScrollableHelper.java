@@ -23,7 +23,6 @@
  */
 package com.soo.ify.view;
 
-import com.soo.ify.log.Log;
 import com.soo.ify.view.ptr.PullToRefreshBase;
 
 import android.annotation.SuppressLint;
@@ -108,7 +107,6 @@ public class ScrollableHelper {
     private static boolean isAdapterViewTop(AdapterView adapterView){
         if(adapterView != null){
             int firstVisiblePosition = adapterView.getFirstVisiblePosition();
-            Log.d("firstVisiblePosition:" + firstVisiblePosition);
             View childAt = adapterView.getChildAt(0);
             if(childAt == null || (firstVisiblePosition == 0 && childAt != null && childAt.getTop() == 0)){
                 return true;

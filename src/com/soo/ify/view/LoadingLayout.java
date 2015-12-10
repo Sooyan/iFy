@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -13,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.soo.ify.R;
+import com.soo.ify.util.ViewFinder;
 
 public class LoadingLayout extends FrameLayout {
     
@@ -25,14 +25,18 @@ public class LoadingLayout extends FrameLayout {
     public static final int STATE_LOADINGSUCCESS = 3;
     
     private FrameLayout loadingView;
-    
     private LinearLayout loadingContainer;
-    private LinearLayout loadingErrorContainer;
+    private LinearLayout errorToastContainer;
     
     private TextView loadingTxt;
-    private TextView loadingETxt;
+    private TextView errorToastTxt;
     
     private OnLoadListener onLoadListener;
+    
+    private CharSequence loadingStr;
+    private CharSequence errorToastStr;
+    private int loadingStrColor;
+    private int errorToastStrColor;
     
     private boolean reLoadAble = true;
     private int currentState = STATE_LOADINGSUCCESS;
@@ -53,61 +57,71 @@ public class LoadingLayout extends FrameLayout {
     }
     
     private void init(AttributeSet attrs) {
-        loadingView = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.view_loading, loadingView);
-//        this.addView(loadingView);
+        loadingView = ViewFinder.inflate(getContext(), R.layout.view_loading, null);
+        LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+        this.addView(loadingView, params);
         
-        loadingContainer = (LinearLayout) loadingView.findViewById(R.id.view_loading_loadinglayout);
-        loadingErrorContainer = (LinearLayout) loadingView.findViewById(R.id.view_loading_loadingerrorlayout);
-        
-        loadingTxt = (TextView) loadingContainer.findViewById(R.id.view_loading_loadinglayout_textview);
-        loadingETxt = (TextView) loadingErrorContainer.findViewById(R.id.view_loading_loadingerrorlayout_textview);
+        loadingContainer = ViewFinder.findViewById(this, R.id.view_loading_loadinglayout);
+        errorToastContainer = ViewFinder.findViewById(this, R.id.view_loading_loadingerrorlayout);
+        loadingTxt = ViewFinder.findViewById(this, R.id.view_loading_loadinglayout_textview);
+        errorToastTxt = ViewFinder.findViewById(this, R.id.view_loading_loadingerrorlayout_textview);
         
         if (attrs != null) {
             TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.LoadingLayout);
             CharSequence loadingText = ta.getText(R.styleable.LoadingLayout_loadingText);
             int loadingTextColor = ta.getColor(R.styleable.LoadingLayout_loadingTextColor, Color.BLACK);
-            boolean isShowLoadingText = ta.getBoolean(R.styleable.LoadingLayout_showLoadingText, true);
             
-            CharSequence loadingErrorText = ta.getText(R.styleable.LoadingLayout_loadingErrorText);
-            int loadingErrorColor = ta.getColor(R.styleable.LoadingLayout_loadingErrorTextColor, Color.BLACK);
-            boolean isShowLoadingErrorText = ta.getBoolean(R.styleable.LoadingLayout_showLoadingErrorText, true);
+            CharSequence errorToastText = ta.getText(R.styleable.LoadingLayout_loadingErrorText);
+            int errorToastColor = ta.getColor(R.styleable.LoadingLayout_loadingErrorTextColor, Color.BLACK);
             
             reLoadAble = ta.getBoolean(R.styleable.LoadingLayout_reLoadingEnable, true);
             
             if (TextUtils.isEmpty(loadingText)) {
                 loadingText = "Loading...";
             }
-            loadingTxt.setText(loadingText);
+            setLoadingText(loadingText);
+            setLoadingTextColor(loadingTextColor);
             
-            loadingTxt.setTextColor(loadingTextColor);
-            if (!isShowLoadingText) {
-                loadingTxt.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(errorToastText)) {
+                errorToastText = "Please try again...";
             }
+            setErrorToastText(errorToastText);
+            setErrorToastColor(errorToastColor);
             
-            if (TextUtils.isEmpty(loadingErrorText)) {
-                loadingErrorText = "Please try again...";
-            }
-            loadingETxt.setText(loadingErrorText);
-            loadingETxt.setTextColor(loadingErrorColor);
-            if (!isShowLoadingErrorText) {
-                loadingETxt.setVisibility(View.GONE);
-            }
-            
-            int state = ta.getInt(R.styleable.LoadingLayout_firstState, STATE_LOADINGSUCCESS);
-            show(state);
+            currentState = ta.getInt(R.styleable.LoadingLayout_firstState, STATE_LOADINGSUCCESS);
             
             ta.recycle();
         }
         
-        loadingETxt.setOnClickListener(new OnClickListener() {
+        errorToastTxt.setOnClickListener(new OnClickListener() {
             
             @Override
             public void onClick(View v) {
-                if (reLoadAble && onLoadListener != null) {
+                if (reLoadAble) {
                     showLoading();
                 }
             }
         });
+    }
+    
+    public void setLoadingText(CharSequence loadingText) {
+        this.loadingStr = loadingText;
+        loadingTxt.setText(loadingStr);
+    }
+    
+    public void setLoadingTextColor(int color) {
+        this.loadingStrColor = color;
+        loadingTxt.setTextColor(loadingStrColor);
+    }
+    
+    public void setErrorToastText(CharSequence errorToastText) {
+        this.errorToastStr = errorToastText;
+        errorToastTxt.setText(errorToastStr);
+    }
+    
+    public void setErrorToastColor(int color) {
+        this.errorToastStrColor = color;
+        errorToastTxt.setTextColor(errorToastStrColor);
     }
     
     public void showLoading() {
@@ -139,7 +153,7 @@ public class LoadingLayout extends FrameLayout {
                 }
                 loadingView.setVisibility(View.VISIBLE);
                 loadingContainer.setVisibility(View.VISIBLE);
-                loadingErrorContainer.setVisibility(View.GONE);
+                errorToastContainer.setVisibility(View.GONE);
                 break;
             case STATE_LOADINGSUCCESS:
                 if (this.getChildAt(1) != null) {
@@ -153,7 +167,7 @@ public class LoadingLayout extends FrameLayout {
                 }
                 loadingView.setVisibility(View.VISIBLE);
                 loadingContainer.setVisibility(View.GONE);
-                loadingErrorContainer.setVisibility(View.VISIBLE);
+                errorToastContainer.setVisibility(View.VISIBLE);
                 break;
                 default:
                     if (this.getChildAt(1) != null) {
@@ -167,38 +181,40 @@ public class LoadingLayout extends FrameLayout {
     }
     
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        show(currentState);
+    }
+    
+    @Override
     public void addView(View child) {
-        if (getChildCount() > 2) {
+        if (getChildCount() >= 2) {
             throw new IllegalStateException("LoadingLayout can host only one external direct child");
         }
-
         super.addView(child);
     }
 
     @Override
     public void addView(View child, int index) {
-        if (getChildCount() > 2) {
+        if (getChildCount() >= 2) {
             throw new IllegalStateException("LoadingLayout can host only one external direct child");
         }
-
         super.addView(child, index);
     }
 
     @Override
     public void addView(View child, ViewGroup.LayoutParams params) {
-        if (getChildCount() > 2) {
+        if (getChildCount() >= 2) {
             throw new IllegalStateException("LoadingLayout can host only one external direct child");
         }
-
         super.addView(child, params);
     }
 
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (getChildCount() > 2) {
+        if (getChildCount() >= 2) {
             throw new IllegalStateException("LoadingLayout can host only one external direct child");
         }
-
         super.addView(child, index, params);
     }
     
