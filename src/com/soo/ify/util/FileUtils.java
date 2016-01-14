@@ -19,6 +19,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import android.os.StatFs;
 
@@ -203,4 +208,26 @@ public class FileUtils {
 
     }
 
+    public static List<File> sortFiles(Collection<File> originFiles) {
+        List<File> resultFiles = null;
+        if (originFiles == null) {
+            return resultFiles;
+        }
+        resultFiles = new ArrayList<File>(originFiles);
+        Collections.sort(resultFiles, new Comparator<File>() {
+
+            @Override
+            public int compare(File lhs, File rhs) {
+                long lt = lhs.lastModified();
+                long rt = rhs.lastModified();
+                long dif = lt - rt;
+                if (dif < 0) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        return resultFiles;
+    }
 }
