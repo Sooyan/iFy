@@ -3,7 +3,10 @@ package com.soo.ify.util;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -117,6 +120,20 @@ public class AppUtils {
             int versionCode = context.getPackageManager().getPackageInfo(pkName, 0).versionCode;
             return pkName + "   " + versionName + "  " + versionCode;
         } catch (Exception e) {
+        }
+        return null;
+    }
+    
+    public static String getProcessName(Context cxt, int pid) {
+        ActivityManager am = (ActivityManager) cxt.getSystemService(Context.ACTIVITY_SERVICE);
+        List<RunningAppProcessInfo> runningApps = am.getRunningAppProcesses();
+        if (runningApps == null) {
+            return null;
+        }
+        for (RunningAppProcessInfo procInfo : runningApps) {
+            if (procInfo.pid == pid) {
+                return procInfo.processName;
+            }
         }
         return null;
     }

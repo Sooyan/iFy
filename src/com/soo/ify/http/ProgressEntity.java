@@ -7,8 +7,6 @@ import java.io.OutputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 
-import android.util.Log;
-
 public class ProgressEntity implements HttpEntity {
     
     public interface ProgressListener {
@@ -112,8 +110,9 @@ public class ProgressEntity implements HttpEntity {
         @Override
         public void write(int oneByte) throws IOException {
             index++;
-            if (this.listener != null) {
-                listener.onProgress(contentLength, index);
+            int progress = (int) ((index / (float)contentLength) * 100);
+            if (listener != null) {
+                listener.onProgress(contentLength, progress);
             }
             this.ouputStream.write(oneByte);
         }

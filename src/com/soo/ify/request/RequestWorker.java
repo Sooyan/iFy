@@ -204,8 +204,7 @@ public class RequestWorker {
 
         @Override
         public void onProgress(long contentLength, long index) {
-//            this.request.onRequest(request.getTracker(), index);
-//            TODO
+            this.request.onRequest(request.getTracker(), (int)index);
         }
         
     }
