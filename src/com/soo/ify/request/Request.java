@@ -16,6 +16,7 @@ package com.soo.ify.request;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicNameValuePair;

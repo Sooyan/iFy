@@ -92,6 +92,7 @@ public class AppUtils {
 //            double latitude = cursor.getDouble(i12);
 //            double longtitude = cursor.getDouble(i13);
             
+            
             int index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
             String path = cursor.getString(index);
             File file = new File(path);
