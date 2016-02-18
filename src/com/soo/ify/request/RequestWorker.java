@@ -198,13 +198,19 @@ public class RequestWorker {
         
         final Request<?> request;
         
+        int percent;
+        
         InnerListener(Request<?> request) {
             this.request = request;
         }
 
         @Override
-        public void onProgress(long contentLength, long index) {
-            this.request.onRequest(request.getTracker(), (int)index);
+        public void onProgress(long contentLength, long transfered) {
+            int newPercent = (int) ((transfered / (float) contentLength) * 100);
+            if (newPercent > percent) {
+                this.request.onRequest("", (int) ((transfered / (float) contentLength) * 100));
+            }
+            percent = newPercent;
         }
         
     }

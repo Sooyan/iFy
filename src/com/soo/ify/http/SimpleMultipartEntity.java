@@ -29,6 +29,8 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicHeader;
 
+import android.util.Log;
+
 public class SimpleMultipartEntity implements HttpEntity {
     private final static char[] MULTIPART_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
@@ -152,10 +154,14 @@ public class SimpleMultipartEntity implements HttpEntity {
     public boolean isStreaming() {
         return false;
     }
+    
+    private long tempTime;
 
     @Override
     public void writeTo(final OutputStream outstream) throws IOException {
+        tempTime = System.currentTimeMillis();
         outstream.write(out.toByteArray());
+        Log.d("--->", "time:" + (System.currentTimeMillis() - tempTime));
     }
 
     @Override

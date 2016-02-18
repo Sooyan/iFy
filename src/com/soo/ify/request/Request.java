@@ -16,7 +16,6 @@ package com.soo.ify.request;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -100,19 +99,19 @@ public class Request<Result> implements Runnable, Comparable<Request<Result>>{
         this.headers = new ArrayList<BasicNameValuePair>();
     }
     
-    protected synchronized final void onStart(String message) {
+    protected final void onStart(String message) {
         if (callback != null) {
             callback.onStart(this, message);
         }
     }
     
-    protected synchronized final void onRequest(String message, int progress) {
+    protected final void onRequest(String message, int progress) {
         if (callback != null) {
             callback.onRequest(this, message, progress);
         }
     }
     
-    protected synchronized final void onFinish(Result result, String message, RequestException exception) {
+    protected final void onFinish(Result result, String message, RequestException exception) {
         if (callback != null) {
             callback.onFinish(this, result, message, exception);
         }
@@ -245,7 +244,7 @@ public class Request<Result> implements Runnable, Comparable<Request<Result>>{
     public final Request<Result> request(boolean isAsync, Callback<Result> callback) {
         this.tracker = new StringBuilder(getUrl());
         if (isAsync) {
-            AsyncCallback<Result> asyncCallback = new AsyncCallback<Result>(requestContext.getLooper(), callback);
+            AsyncCallback<Result> asyncCallback = new AsyncCallback<Result>(callback);
             this.async = isAsync;
             this.callback = asyncCallback;
             

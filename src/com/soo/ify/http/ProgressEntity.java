@@ -10,7 +10,7 @@ import org.apache.http.HttpEntity;
 public class ProgressEntity implements HttpEntity {
     
     public interface ProgressListener {
-        void onProgress(long contentLength, long index);
+        void onProgress(long contentLength, long transfered);
     }
     
     private HttpEntity httpEntity;
@@ -99,7 +99,7 @@ public class ProgressEntity implements HttpEntity {
         ProgressListener listener;
         long contentLength;
         
-        long index;
+        long transfered;
         
         ProgressOutputStream(OutputStream outputStream, ProgressListener listener, long contentLength) {
             this.ouputStream = outputStream;
@@ -109,12 +109,12 @@ public class ProgressEntity implements HttpEntity {
 
         @Override
         public void write(int oneByte) throws IOException {
-            index++;
-            int progress = (int) ((index / (float)contentLength) * 100);
-            if (listener != null) {
-                listener.onProgress(contentLength, progress);
-            }
             this.ouputStream.write(oneByte);
+            
+            transfered++;
+            if (listener != null) {
+                listener.onProgress(contentLength, transfered);
+            }
         }
     }
 }
