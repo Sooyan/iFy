@@ -247,5 +247,7 @@ public abstract class DiskCache<K, V> implements Cache<K, V> {
         }
     }
     
-    
+    public File getDirectory() {
+        return diskCache.getDirectory();
+    }
 }

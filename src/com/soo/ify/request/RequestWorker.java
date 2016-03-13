@@ -1,5 +1,6 @@
 package com.soo.ify.request;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -164,6 +165,10 @@ public class RequestWorker {
             request.appendTracker("IOException in network");
             throw new RequestException(RequestException.CODE_NETWORERROR, e.getMessage());
         }
+    }
+    
+    public File getDiskDirectory() {
+        return diskCache.getCacheDirectory();
     }
     
     private static HttpUriRequest getHttpUriRequest(Request<?> request) {

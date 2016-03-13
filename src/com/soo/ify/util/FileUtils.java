@@ -125,41 +125,6 @@ public class FileUtils {
         return (long) stats.getBlockSize() * (long) stats.getAvailableBlocks();
     }
     
-    
-//    /**
-//     * 根据目录与文件名创建一个文件，注意：flag为true总是返回一个全新的文件，flag为false
-//     * 表示如果没有该文件就创建一个新的，有就直接返回
-//     */
-//    public static File createFile(String filePath, boolean flag){
-//        File file = new File(filePath);
-//        String directory = file.getParent();
-//        String name = file.getName();
-//        return createFile(directory, name, flag);
-//    }
-//
-//    /**
-//     * 根据目录与文件名创建一个文件，注意：flag为true总是返回一个全新的文件，flag为false
-//     * 表示如果没有该文件就创建一个新的，有就直接返回
-//     */
-//    public static File createFile(String directory, String name, boolean flag){
-//        File file = null;
-//        if(!DevUtils.sdcardAvailable()) return file;
-//        if(directory != null && directory.trim().length() > 0
-//                && name != null && name.trim().length() > 0){
-//            File dirFile = new File(directory);
-//            dirFile.mkdirs();
-//            file = new File(dirFile, name);
-//            if(flag) file.delete();
-//            try {
-//                file.createNewFile();
-//            } catch (IOException e1) {
-//                e1.printStackTrace();
-//            }
-//        }
-//        return file;
-//    }
-    
-    
     /**
      * 复制单个文件    拍照选择图片用到
      * @param oldPath 旧文件路径
@@ -229,5 +194,42 @@ public class FileUtils {
             }
         });
         return resultFiles;
+    }
+    
+    /**获取文件的大小
+     * @param file
+     * @return
+     */
+    public static long getFileSize(File file) {
+        long size = 0;
+        if (file == null || !file.exists()) {
+            return 0;
+        }
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                size += getFileSize(f);
+            }
+        } else {
+            size = file.length();
+        }
+        return size;
+    }
+    
+    /**删除文件
+     * @param file
+     */
+    public static void deleteFile(File file) {
+        if (file == null || !file.exists()) {
+            return;
+        }
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File f : files) {
+                deleteFile(f);
+            }
+        } else {
+            file.delete();
+        }
     }
 }
