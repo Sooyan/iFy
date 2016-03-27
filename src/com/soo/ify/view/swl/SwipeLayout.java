@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -27,7 +27,6 @@ import android.view.ViewParent;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-
 import com.soo.ify.R;
 
 public class SwipeLayout extends FrameLayout {
@@ -920,6 +919,8 @@ public class SwipeLayout extends FrameLayout {
     }
 
     private float sX = -1, sY = -1;
+    
+    private boolean hasDragged;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -933,8 +934,7 @@ public class SwipeLayout extends FrameLayout {
                 mDragHelper.processTouchEvent(event);
                 sX = event.getRawX();
                 sY = event.getRawY();
-
-
+                
             case MotionEvent.ACTION_MOVE: {
                 //the drag state and the direction are already judged at onInterceptTouchEvent
                 checkCanDrag(event);
@@ -946,12 +946,19 @@ public class SwipeLayout extends FrameLayout {
             }
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                
+                hasDragged = mIsBeingDragged;
+                
                 mIsBeingDragged = false;
                 mDragHelper.processTouchEvent(event);
                 break;
 
             default://handle other action, such as ACTION_POINTER_DOWN/UP
                 mDragHelper.processTouchEvent(event);
+        }
+        if (hasDragged) {
+            hasDragged = false;
+            return true;
         }
 
         return super.onTouchEvent(event) || mIsBeingDragged || action == MotionEvent.ACTION_DOWN;
@@ -1499,6 +1506,7 @@ public class SwipeLayout extends FrameLayout {
         setCurrentDragEdge(dragEdge);
     }
 
+    @SuppressLint("Override")
     protected void onViewRemoved(View child) {
         for (Map.Entry<DragEdge, View> entry : new HashMap<DragEdge, View>(mDragEdges).entrySet()) {
             if (entry.getValue() == child) {
