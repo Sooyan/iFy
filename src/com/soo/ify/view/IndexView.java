@@ -284,7 +284,30 @@ public class IndexView extends View {
         Iterator<String> iterator = texts.iterator();
         while (iterator.hasNext()) {
             String value = iterator.next();
-            String pinyin = TextUtils.convertToPinyin(value).toUpperCase(Locale.getDefault());
+            String pinyin = TextUtils.convertToPinyin2(value).toUpperCase(Locale.getDefault());
+            
+            if (pinyin.length() > 0) {
+                String firstC = pinyin.substring(0, 1);
+                if (!this.indexArray.contains(firstC)) {
+                    this.indexArray.add(firstC);
+                }
+            }
+        }
+        
+        Collections.sort(this.indexArray);
+        invalidate();
+    }
+    
+    public void setTextCollection(Collection<String> texts) {
+        this.indexArray.clear();
+        if (type == TYPE_ALL || texts == null || texts.size() == 0) {
+            invalidate();
+            return;
+        }
+        Iterator<String> iterator = texts.iterator();
+        while (iterator.hasNext()) {
+            String value = iterator.next();
+            String pinyin = TextUtils.convertToPinyin2(value).toUpperCase(Locale.getDefault());
             
             if (pinyin.length() > 0) {
                 String firstC = pinyin.substring(0, 1);
