@@ -44,7 +44,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
     
     public void add(T data, boolean head) {
         if (data == null) {
-            throw new NullPointerException("Can`t allowed to add null data");
+            return;
         }
         if (head) {
             lisT.add(0, data);
@@ -61,7 +61,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
     
     public void add(Collection<T> datas, boolean head) {
         if (datas == null) {
-            throw new NullPointerException("Can`t allowed to add null datas");
+            return;
         }
         if (head) {
             lisT.addAll(0, datas);
@@ -79,9 +79,18 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
     
     public void removeData(T data) {
         if (data == null) {
-            throw new NullPointerException("Can`t allowed to remove null data");
+            return;
         }
         lisT.remove(data);
+        lisT = onDataChanged(lisT);
+        notifyDataSetChanged();
+    }
+    
+    public void removeData(Collection<T> datas) {
+        if (datas == null) {
+            return;
+        }
+        lisT.removeAll(datas);
         lisT = onDataChanged(lisT);
         notifyDataSetChanged();
     }

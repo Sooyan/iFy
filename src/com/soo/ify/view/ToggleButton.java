@@ -115,6 +115,10 @@ public class ToggleButton extends View {
         borderColor = offBorderColor;
     }
     
+    public boolean getCurrent() {
+        return toggleOn;
+    }
+    
     public void toggle() {
         toggle(true);
     }
