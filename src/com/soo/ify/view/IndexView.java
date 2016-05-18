@@ -309,11 +309,16 @@ public class IndexView extends View {
             String value = iterator.next();
             String pinyin = TextUtils.convertToPinyin2(value).toUpperCase(Locale.getDefault());
             
+            String key = "#";
+            char firstChar = key.charAt(0);
             if (pinyin.length() > 0) {
-                String firstC = pinyin.substring(0, 1);
-                if (!this.indexArray.contains(firstC)) {
-                    this.indexArray.add(firstC);
+                firstChar = pinyin.charAt(0);
+                if (firstChar >= 65 && firstChar <= 90) {
+                    key = pinyin.substring(0, 1);
                 }
+            }
+            if (!this.indexArray.contains(key)) {
+                this.indexArray.add(key);
             }
         }
         

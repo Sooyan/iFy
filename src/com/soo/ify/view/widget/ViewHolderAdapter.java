@@ -24,7 +24,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
         public abstract void onBindNewData(T data, int position);
     }
     
-    private Context context;
+    protected Context context;
     
     private List<T> lisT = new ArrayList<T>();
     
@@ -131,6 +131,9 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
         VH viewHolder = null;
         if (convertView == null) {
             viewHolder = onCreateViewHolder(parent, position);
+            viewHolder.context = this.context;
+            viewHolder.adapter = this;
+            
             convertView = viewHolder.itemView;
             if (convertView == null) {
                 throw new IllegalArgumentException("The itemView must not be null in the" 
@@ -145,10 +148,8 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
         T t = null;
         if (obj != null) {
             t = (T) obj;
+            viewHolder.onBindNewData(t, position);
         }
-        viewHolder.context = this.context;
-        viewHolder.adapter = this;
-        viewHolder.onBindNewData(t, position);
         
         return convertView;
     }

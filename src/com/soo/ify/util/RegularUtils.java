@@ -58,4 +58,5 @@ public class RegularUtils {
         Matcher m = p.matcher(str);
         return m.matches();
     }
+    
 }

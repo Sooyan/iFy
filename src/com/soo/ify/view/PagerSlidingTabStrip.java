@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Typeface;
@@ -92,6 +93,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
     private int tabTextSize = 12;
     private int tabTextColor = 0xFF666666;
+    private int currentTabTextColor = 0xFF666666;
     private Typeface tabTypeface = null;
     private int tabTypefaceStyle = Typeface.BOLD;
 
@@ -243,6 +245,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
         }
 
         updateTabStyles();
+        
 
         checkedTabWidths = false;
 
@@ -257,6 +260,7 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
                         currentPosition = pager.getCurrentItem();
                         scrollToChild(currentPosition, 0);
+                        updateTabTextColor(currentPosition);
                     }
                 });
 
@@ -478,8 +482,35 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
 
         @Override
         public void onPageSelected(int position) {
+            updateTabTextColor(position);
             if (delegatePageListener != null) {
                 delegatePageListener.onPageSelected(position);
+            }
+        }
+
+    }
+    
+    private void updateTabTextColor(int position) {
+
+        for (int i = 0; i < tabCount; i++) {
+            View v = tabsContainer.getChildAt(i);
+            if (v instanceof LinearLayout) {
+                View view = ((LinearLayout) v).getChildAt(0);
+                if (view instanceof TextView) {
+                    TextView tab = (TextView) view;
+                    if (position == i) {
+                        tab.setTextColor(currentTabTextColor);
+                    } else {
+                        tab.setTextColor(tabTextColor);
+                    }
+                }
+            } else if (v instanceof TextView) {
+                TextView tab = (TextView) v;
+                if (position == i) {
+                    tab.setTextColor(currentTabTextColor);
+                } else {
+                    tab.setTextColor(tabTextColor);
+                }
             }
         }
 
@@ -592,6 +623,13 @@ public class PagerSlidingTabStrip extends HorizontalScrollView {
     public void setTextColor(int textColor) {
         this.tabTextColor = textColor;
         updateTabStyles();
+    }
+    
+    public void setCurrentTabTextColor(int textColor) {
+        this.currentTabTextColor = textColor;
+        if (pager != null) {
+            updateTabTextColor(pager.getCurrentItem());
+        }
     }
 
     public void setTextColorResource(int resId) {

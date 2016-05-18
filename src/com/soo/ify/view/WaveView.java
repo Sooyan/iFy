@@ -308,7 +308,7 @@ public class WaveView extends View implements Handler.Callback {
         if (drawable != null) {
             
             int width = drawable.getIntrinsicWidth();
-            int height = drawable.getIntrinsicWidth();
+            int height = drawable.getIntrinsicHeight();
             
             drawable.setBounds(0, 0, width, height);
             
