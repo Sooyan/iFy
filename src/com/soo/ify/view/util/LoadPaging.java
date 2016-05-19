@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2013-2014 Soo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.soo.ify.view.util;
 
 public class LoadPaging {
@@ -31,6 +46,8 @@ public class LoadPaging {
     private int index = 0;
     
     private int tempIndex = 0;
+    
+    private boolean isLoading = false;
 
     @Deprecated
     public LoadPaging(Callback callback) {
@@ -90,6 +107,10 @@ public class LoadPaging {
     }
     
     private void loading(int totalCount, int position, int count, Options options, Object obj) {
+        if (isLoading) {
+            return;
+        }
+        isLoading = true;
         tempIndex = position + count;
         if (callback != null) {
             callback.onLoading(this, totalCount, position, count, options, obj);
@@ -117,5 +138,6 @@ public class LoadPaging {
             tempIndex = 0;
         }
         index = tempIndex;
+        isLoading = false;
     }
 }
