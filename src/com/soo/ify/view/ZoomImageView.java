@@ -23,9 +23,12 @@ import android.widget.ImageView;
  * @author Soo
  */
 public class ZoomImageView extends ImageView implements OnScaleGestureListener,
-        OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener
-
-{
+        OnTouchListener, ViewTreeObserver.OnGlobalLayoutListener {
+    
+    public interface OnScaleListener {
+        
+    }
+    
     private static final String TAG = ZoomImageView.class.getSimpleName();
     public static final float SCALE_MAX = 4.0f;
     private static final float SCALE_MID = 2.0f;
@@ -45,7 +48,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
      * 缩放的手势检测
      */
     private ScaleGestureDetector mScaleGestureDetector = null;
-    private final Matrix mScaleMatrix = new Matrix();
+    private Matrix mScaleMatrix = new Matrix();
 
     /**
      * 用于双击检测
@@ -89,7 +92,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                                     }
                                 }
                             }
-                        }, 300);
+                        }, 100);
                         return true;
                     }
 
@@ -122,6 +125,12 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
                 });
         mScaleGestureDetector = new ScaleGestureDetector(context, this);
         this.setOnTouchListener(this);
+    }
+    
+    @Override
+    public void setImageDrawable(Drawable drawable) {
+        once = true;
+        super.setImageDrawable(drawable);
     }
 
     /**
@@ -400,7 +409,7 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
         super.onDetachedFromWindow();
         getViewTreeObserver().removeGlobalOnLayoutListener(this);
     }
-
+    
     @Override
     public void onGlobalLayout() {
         if (once) {
@@ -413,6 +422,8 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             // 拿到图片的宽和高
             int dw = d.getIntrinsicWidth();
             int dh = d.getIntrinsicHeight();
+            
+            Log.e(TAG, "Width:" + width + "   dWidth:" + dw + "  Height:" + height + "  dHeight:" + height);
             float scale = 1.0f;
             // 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
             if (dw > width && dh <= height) {
@@ -427,10 +438,11 @@ public class ZoomImageView extends ImageView implements OnScaleGestureListener,
             }
             initScale = scale;
 
-            Log.e(TAG, "initScale = " + initScale);
-            mScaleMatrix.postTranslate((width - dw) / 2, (height - dh) / 2);
-            mScaleMatrix.postScale(scale, scale, getWidth() / 2,
-                    getHeight() / 2);
+            float tX = (width - dw) / 2;
+            float tY = (height - dh) / 2;
+            
+            mScaleMatrix.postTranslate(tX, tY);
+            mScaleMatrix.postScale(scale, scale, getWidth() / 2, getHeight() / 2);
             // 图片移动至屏幕中心
             setImageMatrix(mScaleMatrix);
             once = false;

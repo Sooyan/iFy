@@ -22,7 +22,7 @@ public class StretchScrollView extends ScrollView {
     /** Damping, the smaller the greater the resistance */
     private static final float SCROLL_RATIO = 0.4f;
 
-    private View mChildRootView;
+    protected View mChildRootView;
 
     private float mTouchY;
     private boolean mTouchStop = false;
