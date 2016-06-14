@@ -173,28 +173,32 @@ public class RequestWorker {
     
     private static HttpUriRequest getHttpUriRequest(Request<?> request) {
         HttpUriRequest httpUriRequest = null;
-        if (request != null) {
-            String url = request.getUrl();
-            Method method = request.getMethod();
-            if (url != null) {
-                switch (method) {
-                case GET:
-                    httpUriRequest = new HttpGet(url);
-                    break;
-                case POST:
-                    HttpPost httpPost = new HttpPost(url);
-                    HttpEntity entity = request.getHttpEntity();
-                    if (entity != null) {
-                        ProgressEntity progressEntity = new ProgressEntity(entity, new InnerListener(request));
-                        httpPost.setEntity(progressEntity);
+        try {
+            if (request != null) {
+                String url = request.getUrl();
+                Method method = request.getMethod();
+                if (url != null) {
+                    switch (method) {
+                    case GET:
+                        httpUriRequest = new HttpGet(url);
+                        break;
+                    case POST:
+                        HttpPost httpPost = new HttpPost(url);
+                        HttpEntity entity = request.getHttpEntity();
+                        if (entity != null) {
+                            ProgressEntity progressEntity = new ProgressEntity(entity, new InnerListener(request));
+                            httpPost.setEntity(progressEntity);
+                        }
+                        httpUriRequest = httpPost;
+                        break;
                     }
-                    httpUriRequest = httpPost;
-                    break;
                 }
             }
-        }
-        for (BasicNameValuePair bnvp : request.getHeader()) {
-            httpUriRequest.addHeader(bnvp.getName(), bnvp.getValue());
+            for (BasicNameValuePair bnvp : request.getHeader()) {
+                httpUriRequest.addHeader(bnvp.getName(), bnvp.getValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return httpUriRequest;
     }

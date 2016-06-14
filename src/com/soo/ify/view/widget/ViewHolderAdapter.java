@@ -29,6 +29,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
     public static abstract class ViewHolder<T> {
        
        public Context context;
+       public ViewGroup parent;
        public View itemView;
        public ViewHolderAdapter<T, ? extends ViewHolderAdapter.ViewHolder<T>> adapter;
         
@@ -147,6 +148,7 @@ public abstract class ViewHolderAdapter<T, VH extends ViewHolderAdapter.ViewHold
         if (convertView == null) {
             viewHolder = onCreateViewHolder(parent, position);
             viewHolder.context = this.context;
+            viewHolder.parent = parent;
             viewHolder.adapter = this;
             
             convertView = viewHolder.itemView;

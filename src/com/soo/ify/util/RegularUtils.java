@@ -59,4 +59,21 @@ public class RegularUtils {
         return m.matches();
     }
     
+    public static String filterSpecial(String str) {
+          String regEx = "[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+          Pattern p = Pattern.compile(regEx);
+          Matcher m = p.matcher(str);
+          return m.replaceAll("").trim();
+    }
+    
+    /**判断是否包含特殊字符
+     * @param string
+     * @return
+     */
+    public static boolean conSpeCharacters(String string) {
+        if (string.replaceAll("[\u4e00-\u9fa5]*[a-z]*[A-Z]*[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]", "").length()==0) {
+            return true;
+        }
+            return false;
+     }
 }
