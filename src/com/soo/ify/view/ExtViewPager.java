@@ -25,15 +25,24 @@ public class ExtViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        return scrollAble ? super.onInterceptTouchEvent(arg0) : scrollAble;
+        try {
+            return scrollAble ? super.onInterceptTouchEvent(arg0) : scrollAble;
+        } catch (Exception e) {
+        }
+        return false;
     }
     
     @Override
     public boolean onTouchEvent(MotionEvent arg0) {
-        return scrollAble ? super.onTouchEvent(arg0) : scrollAble;
+        try {
+            return scrollAble ? super.onTouchEvent(arg0) : scrollAble;
+        } catch (Exception e) {
+        }
+        return false;
     }
     
     public void setScrollAble(boolean able) {
         this.scrollAble = able;
     }
+    
 }
