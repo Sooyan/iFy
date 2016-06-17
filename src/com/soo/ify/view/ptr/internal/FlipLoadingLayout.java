@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,17 @@ public class FlipLoadingLayout extends LoadingLayout {
 
 	public FlipLoadingLayout(Context context, final Mode mode, final Orientation scrollDirection, TypedArray attrs) {
 		super(context, mode, scrollDirection, attrs);
+		
+//      @Author Soo adding progress style code by external with xml[start]
+      if (attrs.hasValue(R.styleable.PullToRefresh_ptrProgressDrawable)) {
+          Drawable drawable = attrs.getDrawable(R.styleable.PullToRefresh_ptrProgressDrawable);
+          if (null != drawable) {
+              Rect bounds = mHeaderProgress.getIndeterminateDrawable().getBounds();
+              mHeaderProgress.setIndeterminateDrawable(drawable);
+              mHeaderProgress.getIndeterminateDrawable().setBounds(bounds);
+          }
+      }
+//    @Author Soo adding progress style code by external with xml[end]
 
 		final int rotateAngle = mode == Mode.PULL_FROM_START ? -180 : 180;
 

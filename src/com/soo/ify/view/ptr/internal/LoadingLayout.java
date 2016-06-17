@@ -19,6 +19,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
@@ -85,6 +86,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 		
 		mHeaderText = (TextView) mInnerLayout.findViewById(R.id.pull_to_refresh_text);
 		mHeaderProgress = (ProgressBar) mInnerLayout.findViewById(R.id.pull_to_refresh_progress);
+		
 		mSubHeaderText = (TextView) mInnerLayout.findViewById(R.id.pull_to_refresh_sub_text);
 		mHeaderImage = (ImageView) mInnerLayout.findViewById(R.id.pull_to_refresh_image);
 
@@ -95,9 +97,13 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 				lp.gravity = scrollDirection == Orientation.VERTICAL ? Gravity.TOP : Gravity.LEFT;
 
 				// Load in labels
-				mPullLabel = context.getString(R.string.pull_to_refresh_from_bottom_pull_label);
-				mRefreshingLabel = context.getString(R.string.pull_to_refresh_from_bottom_refreshing_label);
-				mReleaseLabel = context.getString(R.string.pull_to_refresh_from_bottom_release_label);
+				String extEndPullLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_end_pull);
+                String extEndRefreshingLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_end_refreshing);
+                String extEndReleaseLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_end_release);
+				
+				mPullLabel = null == extEndPullLabel ? context.getString(R.string.pull_to_refresh_from_bottom_pull_label) : extEndPullLabel;
+				mRefreshingLabel = null == extEndRefreshingLabel ? context.getString(R.string.pull_to_refresh_from_bottom_refreshing_label) : extEndRefreshingLabel;
+				mReleaseLabel = null == extEndReleaseLabel ? context.getString(R.string.pull_to_refresh_from_bottom_release_label) : extEndReleaseLabel;
 				break;
 
 			case PULL_FROM_START:
@@ -105,9 +111,13 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 				lp.gravity = scrollDirection == Orientation.VERTICAL ? Gravity.BOTTOM : Gravity.RIGHT;
 
 				// Load in labels
-				mPullLabel = context.getString(R.string.pull_to_refresh_pull_label);
-				mRefreshingLabel = context.getString(R.string.pull_to_refresh_refreshing_label);
-				mReleaseLabel = context.getString(R.string.pull_to_refresh_release_label);
+				String extStartPullLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_start_pull);
+				String extStartRefreshingLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_start_refreshing);
+				String extStartReleaseLabel = attrs.getString(R.styleable.PullToRefresh_ptrLabel_start_release);
+				
+				mPullLabel = null == extStartPullLabel ? context.getString(R.string.pull_to_refresh_pull_label) : extStartPullLabel;
+				mRefreshingLabel = null == extStartRefreshingLabel ? context.getString(R.string.pull_to_refresh_refreshing_label) : extStartRefreshingLabel;
+				mReleaseLabel = null == extStartReleaseLabel ? context.getString(R.string.pull_to_refresh_release_label) : extStartReleaseLabel;
 				break;
 		}
 
@@ -142,7 +152,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 				setSubTextColor(colors);
 			}
 		}
-
+		
 		// Try and get defined drawable from Attrs
 		Drawable imageDrawable = null;
 		if (attrs.hasValue(R.styleable.PullToRefresh_ptrDrawable)) {
@@ -179,6 +189,7 @@ public abstract class LoadingLayout extends FrameLayout implements ILoadingLayou
 
 		// Set Drawable, and save width/height
 		setLoadingDrawable(imageDrawable);
+		
 
 		reset();
 	}

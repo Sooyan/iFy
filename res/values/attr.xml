@@ -160,6 +160,19 @@
         <attr name="ptrAdapterViewBackground" format="reference|color" />
         <attr name="ptrDrawableTop" format="reference" />
         <attr name="ptrDrawableBottom" format="reference" />
+        
+        <!-- @Author Soo adding progress style code by external with xml[start] -->
+        <attr name="ptrProgressDrawable" format="reference"/>
+        
+        <attr name="ptrLabel_start_pull" format="string"/>
+        <attr name="ptrLabel_start_release" format="string"/>
+        <attr name="ptrLabel_start_refreshing" format="string"/>
+        
+        <attr name="ptrLabel_end_pull" format="string"/>
+        <attr name="ptrLabel_end_release" format="string"/>
+        <attr name="ptrLabel_end_refreshing" format="string"/>
+        <!-- @Author Soo adding progress style code by external with xml[end] -->
+        
     </declare-styleable>
     <declare-styleable name="ArrowView">
         <attr name="direction">
