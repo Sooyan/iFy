@@ -52,7 +52,9 @@ public class SooHttpClient implements HttpClient {
     private static final int DEFAULT_HTTP_PORT = 80;
     private static final int DEFAULT_HTTPS_PORT = 443;
 
-    private static final int DEFAULT_TIMEOUT = 20 * 1000;
+    private static final int DEFAULT_TIMEOUT_CONN = 8 * 1000;
+    private static final int DEFAULT_TIMEOUT_SOCKET = 20 * 1000;
+    
     private static final int DEFAULT_MAX_CONN_PER_ROUT = 128;
     private static final int DEFAULT_MAX_CONN_TOTAL = 512;
     private static final boolean DEFAULT_TCP_NO_DELAY = true;
@@ -72,7 +74,7 @@ public class SooHttpClient implements HttpClient {
         ClientConnectionManager manager = getClientConnectionManager(params);
         httpContext = new BasicHttpContext();
 
-        client = new DefaultHttpClient(manager, getHttpParmas());
+        client = new DefaultHttpClient(manager, params);
 
         client.addRequestInterceptor(new HttpRequestInterceptor() {
             @Override
@@ -142,14 +144,14 @@ public class SooHttpClient implements HttpClient {
 
     private BasicHttpParams getHttpParmas() {
         BasicHttpParams params = new BasicHttpParams();
-        ConnManagerParams.setTimeout(params, DEFAULT_TIMEOUT);
+        ConnManagerParams.setTimeout(params, DEFAULT_TIMEOUT_SOCKET);
         ConnManagerParams.setMaxConnectionsPerRoute(params,
                 new ConnPerRouteBean(DEFAULT_MAX_CONN_PER_ROUT));
         ConnManagerParams
                 .setMaxTotalConnections(params, DEFAULT_MAX_CONN_TOTAL);
         HttpConnectionParams.setTcpNoDelay(params, DEFAULT_TCP_NO_DELAY);
-        HttpConnectionParams.setConnectionTimeout(params, DEFAULT_TIMEOUT);
-        HttpConnectionParams.setSoTimeout(params, DEFAULT_TIMEOUT);
+        HttpConnectionParams.setConnectionTimeout(params, DEFAULT_TIMEOUT_CONN);
+        HttpConnectionParams.setSoTimeout(params, DEFAULT_TIMEOUT_SOCKET);
         HttpConnectionParams.setSocketBufferSize(params, DEFAULT_BUFFER_SIZE);
         HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
         HttpProtocolParams.setUserAgent(params,

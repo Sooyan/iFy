@@ -130,10 +130,10 @@ public class RequestWorker {
     protected <Result> byte[] getDataFromNetwork(Request<Result> request) throws RequestException {
         ArgsUtils.notNull(request, "Request");
         request.appendTracker("working in network");
-        if (!DevUtils.NetWork.networkAvaliable(request.getRequestContext().getContext())) {
-            request.appendTracker("no network");
-            throw new RequestException(RequestException.CODE_NONETWORK, "no network");
-        }
+//        if (!DevUtils.NetWork.networkAvaliable(request.getRequestContext().getContext())) {
+//            request.appendTracker("no network");
+//            throw new RequestException(RequestException.CODE_NONETWORK, "no network");
+//        }
         if (httpClient == null) {
             request.appendTracker("no httpclient has been found");
             throw new RequestException(RequestException.CODE_UNKNOWE, "No http client");
