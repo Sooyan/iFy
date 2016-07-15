@@ -22,7 +22,6 @@ import android.util.AttributeSet;
 import android.webkit.WebView;
 
 import com.soo.ify.view.ptr.PullToRefreshWebView;
-import com.soo.ify.view.ptr.PullToRefreshBase.Mode;
 
 /**
  * An advanced version of {@link PullToRefreshWebView} which delegates the

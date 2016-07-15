@@ -71,7 +71,7 @@ public class RegularUtils {
      * @return
      */
     public static boolean conSpeCharacters(String string) {
-        if (string.replaceAll("[\u4e00-\u9fa5]*[a-z]*[A-Z]*[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]", "").length()==0) {
+        if (string.replaceAll("[\u4e00-\u9fa5]*[a-z]*[A-Z]*[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]*[\0]", "").length()==0) {
             return true;
         }
             return false;

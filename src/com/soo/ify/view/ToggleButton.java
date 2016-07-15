@@ -183,6 +183,13 @@ public class ToggleButton extends View {
         }
     }
     
+    SimpleSpringListener springListener = new SimpleSpringListener(){
+        @Override
+        public void onSpringUpdate(Spring spring) {
+            final double value = spring.getCurrentValue();
+            calculateEffect(value);
+        }
+    };
     
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -228,13 +235,6 @@ public class ToggleButton extends View {
     }
     
     
-    SimpleSpringListener springListener = new SimpleSpringListener(){
-        @Override
-        public void onSpringUpdate(Spring spring) {
-            final double value = spring.getCurrentValue();
-            calculateEffect(value);
-        }
-    };
 
     private int clamp(int value, int low, int high) {
         return Math.min(Math.max(value, low), high);
