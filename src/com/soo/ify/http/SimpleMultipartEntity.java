@@ -31,6 +31,7 @@ import org.apache.http.message.BasicHeader;
 
 import android.util.Log;
 
+@Deprecated
 public class SimpleMultipartEntity implements HttpEntity {
     private final static char[] MULTIPART_CHARS = "-_1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
@@ -47,7 +48,7 @@ public class SimpleMultipartEntity implements HttpEntity {
             buf.append(MULTIPART_CHARS[rand.nextInt(MULTIPART_CHARS.length)]);
         }
         this.boundary = buf.toString();
-
+        
     }
 
     public void writeFirstBoundaryIfNeeds(){
