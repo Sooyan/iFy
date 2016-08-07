@@ -451,6 +451,11 @@ public class WheelView extends View {
 
 //		setBackgroundResource(R.drawable.wheel_bg);
 	}
+	
+	public void setCenterDrawable(int drawable) {
+	    centerDrawable = getContext().getResources().getDrawable(drawable);
+	    invalidate();
+	}
 
 	/**
 	 * Calculates desired height for layout
@@ -800,9 +805,31 @@ public class WheelView extends View {
 	private void drawCenterRect(Canvas canvas) {
 		int center = getHeight() / 2;
 		int offset = getItemHeight() / 2;
-		centerDrawable.setBounds(0, center - offset, getWidth(), center
-				+ offset);
+		if (centerDrawableDrawMode == 0) {
+		    centerDrawable.setBounds(0, center - offset, getWidth(), center
+	                + offset);
+		} else if (centerDrawableDrawMode == 1) {
+		    int widthOffset = getWidth() / 2;
+		    offset = offset < widthOffset ? offset : widthOffset;
+		    offset = (int) (offset * 1.5f);
+		    centerDrawable.setBounds(widthOffset - offset, center - offset, widthOffset + offset, center
+                    + offset);
+		} else {
+		    centerDrawable.setBounds(0, center - offset, getWidth(), center
+                    + offset);
+		}
+		
 		centerDrawable.draw(canvas);
+	}
+	
+	/**
+	 * 0:默认上下左右对齐； 1:fitCenter
+	 */
+	private int centerDrawableDrawMode = 0;
+	
+	public void setCenterDrawableDrawMode(int centerDrawableDrawMode) {
+	    this.centerDrawableDrawMode = centerDrawableDrawMode;
+	    invalidate();
 	}
 
 	@Override
@@ -815,6 +842,10 @@ public class WheelView extends View {
 		if (!gestureDetector.onTouchEvent(event)
 				&& event.getAction() == MotionEvent.ACTION_UP) {
 			justify();
+		}
+		
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		    getParent().requestDisallowInterceptTouchEvent(true);
 		}
 		return true;
 	}
