@@ -312,4 +312,11 @@
         <attr name="waveStrokeWidth" format="dimension"/>
     </declare-styleable>
     
+    <declare-styleable name="CalendarView">
+        <attr name="mode" format="enum">
+            <enum name="list" value="0"/>
+            <enum name="pager" value="1"/>
+        </attr>
+    </declare-styleable>
+    
 </resources>

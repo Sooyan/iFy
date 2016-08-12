@@ -2,8 +2,9 @@
  *        http://www.june.com
  * Copyright © 2015 June.Co.Ltd. All Rights Reserved.
  */
-package com.soo.ify.view.dt;
+package com.soo.ify.view.dt.cell;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 
 /**
@@ -16,6 +17,9 @@ public class CellRender {
     }
 
     public Paint getPaint(Cell cell) {
-        return null;
+        Paint p = new Paint();
+        p.setTextSize(30);
+        p.setColor(Color.WHITE);
+        return p;
     }
 }

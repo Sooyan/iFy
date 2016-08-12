@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.soo.ify.view.dt;
+package com.soo.ify.view.dt.cell;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,31 +27,40 @@ import android.view.View;
 /**
  * @author Soo
  */
-public class Month6x7View extends View {
+public class CellView extends View {
     
-    private static final int RAW_COUNT = 6;
-    private static final int COL_COUNT = 7;
     private static final int DEFAULT_CELL_WIDTH = 100;
     private static final int DEFAULT_CELL_HEIGHT = 100;
     
-    private int rawCount = RAW_COUNT;
-    private int colCount = COL_COUNT;
-    private int totalCount = rawCount * colCount;
+    private int rawCount;
+    private int colCount;
     
     private int cellWidth = DEFAULT_CELL_WIDTH;
     private int cellHeight = DEFAULT_CELL_HEIGHT;
     
-    private CellBuilder cellBuilder;
     private CellRender cellRender;
+    private CellBuilder cellBuilder;
     
     private List<Cell> cells;
     
-    public Month6x7View(Context context) {
+    public CellView(Context context) {
         super(context);
+        init();
     }
     
-    public Month6x7View(Context context, AttributeSet attrs) {
+    public CellView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
+    }
+    
+    private void init() {
+        cellRender = new CellRender();
+        
+        cellBuilder = new MonthCellBuilder(getContext());
+        rawCount = cellBuilder.getRawCount();
+        colCount = cellBuilder.getColumnCount();
+        
+        invalidateCell();
     }
 
     public void setCurrentDate(Date date) {
@@ -65,7 +73,7 @@ public class Month6x7View extends View {
     }
     
     public void invalidateCell() {
-        cells = cellBuilder.getCells();
+        cells = cellBuilder.currentCells();
         if (cells == null) {
             return;
         }
@@ -99,7 +107,7 @@ public class Month6x7View extends View {
         int mode = MeasureSpec.getMode(heightMeasureSpec);
         
         if (mode == MeasureSpec.EXACTLY) {
-            cellWidth = height / rawCount;
+            cellHeight = height / rawCount;
             return heightMeasureSpec;
         } else {
             height = cellHeight * rawCount;
@@ -123,7 +131,8 @@ public class Month6x7View extends View {
             int col = i % (rawCount + 1);
             
             Cell cell = cells.get(i);
-            cell.setBounds(new Rect(col * cellWidth, raw * cellHeight, col * cellWidth + cellWidth, raw * cellHeight + cellHeight));
+            Rect rect = new Rect(col * cellWidth, raw * cellHeight, col * cellWidth + cellWidth, raw * cellHeight + cellHeight);
+            cell.setBounds(rect);
         }
     }
     
