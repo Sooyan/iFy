@@ -1,10 +1,22 @@
-/**
- *        http://www.june.com
- * Copyright © 2015 June.Co.Ltd. All Rights Reserved.
+/*
+ * Copyright (c) 2013-2014 Soo
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.soo.ify.view.dt;
 
 import com.soo.ify.R;
+import com.soo.ify.view.dt.util.CalendarContext;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -39,6 +51,7 @@ public class CalendarView extends FrameLayout {
         }
     }
     
+    private CalendarContext calendarContext;
     private int mode;
     private CalendarViewDelegate delegate;
     
@@ -52,6 +65,7 @@ public class CalendarView extends FrameLayout {
     
     public CalendarView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        calendarContext = new CalendarContext(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
         mode = typedArray.getInt(R.styleable.CalendarView_mode, Mode.List.value());
         switch (Mode.valueOf(mode)) {
@@ -64,6 +78,10 @@ public class CalendarView extends FrameLayout {
         }
         typedArray.recycle();
     }
+    
+    public CalendarContext getCalendarContext() {
+        return calendarContext;
+    }
 
     private interface CalendarViewDelegate {
         
@@ -73,10 +91,12 @@ public class CalendarView extends FrameLayout {
         
         protected Context context;
         protected CalendarView proxy;
+        protected CalendarContext calendarContext;
         
         AbsCalendarViewDelegate(Context context, CalendarView proxy, AttributeSet attrs) {
             this.context = context;
             this.proxy = proxy;
+            this.calendarContext = proxy.getCalendarContext();
         }
     }
 }

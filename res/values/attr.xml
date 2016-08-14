@@ -317,6 +317,8 @@
             <enum name="list" value="0"/>
             <enum name="pager" value="1"/>
         </attr>
+        <attr name="maxDate" format="string"/>
+        <attr name="minDate" format="string"/>
     </declare-styleable>
     
 </resources>

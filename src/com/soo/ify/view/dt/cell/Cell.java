@@ -20,7 +20,6 @@ import java.util.Calendar;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.util.Log;
 
 /**
  * @author Soo
@@ -33,18 +32,14 @@ public class Cell {
     private Rect rect;
     private Size fontSize;
     
-    private boolean changed;
-    
     public Cell() {
         this.fontSize = new Size();
-        this.changed = true;
     }
     
     public void setCalendar(Calendar calendar) {
         if (this.calendar != null && this.calendar.equals(calendar)) {
             return;
         }
-        this.changed = true;
         this.calendar = calendar;
     }
     
@@ -52,7 +47,6 @@ public class Cell {
         if (this.rect != null && this.rect.equals(rect)) {
             return;
         }
-        this.changed = true;
         this.rect = rect;
     }
     
@@ -60,14 +54,10 @@ public class Cell {
         if (this.cellRender != null && this.cellRender.equals(cellRender)) {
             return;
         }
-        this.changed = true;
         this.cellRender = cellRender;
     }
     
     public void draw(Canvas canvas) {
-        if (!changed) {
-            return;
-        }
         if (cellRender == null) {
             throw new RuntimeException("No CellRender be found");
         }
@@ -79,12 +69,10 @@ public class Cell {
             paint = new Paint();
         }
         makeDraw(canvas, rect, paint);
-        this.changed = false;
     }
     
     private void makeDraw(Canvas canvas, Rect rect, Paint paint) {
         String text = getDrawText();
-        Log.d("--->", text);
         
         computeTextSize(paint, text);
         float x = (rect.width() * 1.0f - fontSize.width) / 2.0f + rect.left;
