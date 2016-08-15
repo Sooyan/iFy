@@ -15,13 +15,12 @@
  */
 package com.soo.ify.view.dt;
 
-import com.soo.ify.R;
-import com.soo.ify.view.dt.util.CalendarContext;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import com.soo.ify.R;
 
 /**
  * @author Soo
@@ -51,7 +50,6 @@ public class CalendarView extends FrameLayout {
         }
     }
     
-    private CalendarContext calendarContext;
     private int mode;
     private CalendarViewDelegate delegate;
     
@@ -65,9 +63,8 @@ public class CalendarView extends FrameLayout {
     
     public CalendarView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        calendarContext = new CalendarContext(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
-        mode = typedArray.getInt(R.styleable.CalendarView_mode, Mode.List.value());
+        mode = typedArray.getInt(R.styleable.CalendarView_mode, Mode.Pager.value());
         switch (Mode.valueOf(mode)) {
             case List:
                 delegate = new ListCalendarDelegate(context, this, attrs);
@@ -79,10 +76,6 @@ public class CalendarView extends FrameLayout {
         typedArray.recycle();
     }
     
-    public CalendarContext getCalendarContext() {
-        return calendarContext;
-    }
-
     private interface CalendarViewDelegate {
         
     }
@@ -91,12 +84,10 @@ public class CalendarView extends FrameLayout {
         
         protected Context context;
         protected CalendarView proxy;
-        protected CalendarContext calendarContext;
         
         AbsCalendarViewDelegate(Context context, CalendarView proxy, AttributeSet attrs) {
             this.context = context;
             this.proxy = proxy;
-            this.calendarContext = proxy.getCalendarContext();
         }
     }
 }

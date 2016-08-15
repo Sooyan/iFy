@@ -13,22 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.soo.ify.view.dt.util;
+package com.soo.ify.view.dt.support;
 
 import java.util.Calendar;
 
 /**
  * @author Soo
  */
-public interface DateEncoder {
-
-    /**获取阳历的节日
-     * @param calendar
-     */
-    void getSolarFestival(Calendar calendar);
+public class Cell {
     
-    /**获取阴历的节日
-     * @param calendar
-     */
-    void getLunarFestival(Calendar calendar);
+    private Calendar calendar;
+    private boolean marked;
+    
+    public Cell(Calendar calendar) {
+        this.calendar = calendar;
+    }
+    
+    public void toggle() {
+        marked = !marked;
+    }
+    
+    public void mark() {
+        marked = true;
+    }
+    
+    public void disMark() {
+        marked = false;
+    }
+    
+    public boolean isMarked() {
+        return marked;
+    }
+    
+    public Calendar getCalendar() {
+        return calendar;
+    }
 }

@@ -16,56 +16,64 @@
 package com.soo.ify.view.dt;
 
 import java.util.Calendar;
+import java.util.List;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.soo.ify.R;
 import com.soo.ify.view.dt.CalendarView.AbsCalendarViewDelegate;
-import com.soo.ify.view.dt.cell.MonthView;
-import com.soo.ify.view.dt.util.CalendarContext;
+import com.soo.ify.view.dt.support.CalendarContext_6x7;
+import com.soo.ify.view.dt.support.Cell;
+import com.soo.ify.view.dt.support.MonthView;
 
 /**
  * @author Soo
  */
 public class ListCalendarDelegate extends AbsCalendarViewDelegate {
     
-    private CalendarComputer calendarComputer;
     private ListView listView;
+    private CalendarContext_6x7 calendarContext;
     private InnerAdapter adapter;
 
     ListCalendarDelegate(Context context, CalendarView proxy, AttributeSet attrs) {
         super(context, proxy, attrs);
         
-        calendarComputer = new CalendarComputer(calendarContext);
         listView = new ListView(context);
         proxy.addView(listView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        adapter = new InnerAdapter(context, calendarComputer);
+        
+        calendarContext = new CalendarContext_6x7(context, attrs);
+        adapter = new InnerAdapter(context, calendarContext);
         listView.setAdapter(adapter);
+        
     }
 
-    static class InnerAdapter extends BaseAdapter {
+    static class InnerAdapter extends BaseAdapter implements OnItemClickListener {
         
         Context context;
-        CalendarComputer calendarComputer;
+        CalendarContext_6x7 calendarContext;
         
-        InnerAdapter(Context context, CalendarComputer calendarComputer) {
+        InnerAdapter(Context context, CalendarContext_6x7 calendarContext) {
             this.context = context;
-            this.calendarComputer = calendarComputer;
+            this.calendarContext = calendarContext;
         }
 
         @Override
         public int getCount() {
-            return calendarComputer.getMonthTotalCount();
+            return calendarContext.getMonthTotalCount();
         }
 
         @Override
         public Object getItem(int position) {
-            return calendarComputer.getMonthCalendarByPosition(position);
+            return calendarContext.getCells(position);
         }
 
         @Override
@@ -75,19 +83,41 @@ public class ListCalendarDelegate extends AbsCalendarViewDelegate {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MonthView monthView = null;
+            ViewHolder holder = null;
             if (convertView == null) {
-                monthView = new MonthView(context);
-                monthView.setCalendarStandard(standard);
+                convertView = View.inflate(context, R.layout.dt_monthview_list, null);
+                
+                holder = new ViewHolder();
+                holder.monthView = (MonthView) convertView.findViewById(R.id.dt_monthview_list_item);
+                holder.titleTxv = (TextView) convertView.findViewById(R.id.dt_monthview_list_title);
+                
+                convertView.setTag(holder);
             } else {
-                monthView = (MonthView) convertView;
+                holder = (ViewHolder) convertView.getTag();
             }
             
-            Calendar calendar = (Calendar) getItem(position);
+            Calendar calendar = calendarContext.getCalendar(position);
+            holder.titleTxv.setText(calendar.get(Calendar.YEAR) + "年" + (calendar.get(Calendar.MONTH) + 1) + "月");
             
-            monthView.setCurrentDate(calendar);
+            @SuppressWarnings("unchecked")
+            List<Cell> cells = (List<Cell>) getItem(position);
+            holder.monthView.setCells(cells);
+            holder.monthView.setOnItemClickListener(this);
             
-            return monthView;
+            return convertView;
+        }
+        
+        static class ViewHolder {
+            TextView titleTxv;
+            MonthView monthView;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            BaseAdapter adapter = (BaseAdapter) parent.getAdapter();
+            Cell cell = (Cell) adapter.getItem(position);
+            cell.toggle();
+            adapter.notifyDataSetChanged();
         }
     }
 }

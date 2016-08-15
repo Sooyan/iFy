@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.soo.ify.view.dt;
+package com.soo.ify.view.dt.support;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,26 +27,27 @@ import android.util.AttributeSet;
 
 import com.soo.ify.R;
 
-/**
+/**用于统一管理日历的上下文
  * @author Soo
  */
-public class CalendarStandard {
+public abstract class CalendarContext {
     
-    private final static Locale DEFAULT_LOCALE = Locale.CHINA;
+    private static final String DATEFORMAT = "yyyy-MM-dd hh:mm:ss";
+    private static final Locale DEFAULT_LOCALE = Locale.getDefault();
     
-    private Context context;
-    private Locale locale = DEFAULT_LOCALE;
-    private Calendar minCalendar;
-    private Calendar maxCalendar;
-    private Calendar curCalendar;
-
-    public CalendarStandard(Context context, AttributeSet attrs) {
+    protected Context context;
+    protected Locale locale = DEFAULT_LOCALE;
+    protected Calendar minCalendar;
+    protected Calendar maxCalendar;
+    protected Calendar curCalendar;
+    
+    public CalendarContext(Context context, AttributeSet attrs) {
         this.context = context;
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
         String minDateStr = typedArray.getString(R.styleable.CalendarView_minDate);
         String maxDateStr = typedArray.getString(R.styleable.CalendarView_maxDate);
         try {
-            DateFormat SDFORMATER = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", locale);
+            DateFormat SDFORMATER = new SimpleDateFormat(DATEFORMAT, locale);
             minCalendar = newCalendar(SDFORMATER.parse(minDateStr));
             maxCalendar = newCalendar(SDFORMATER.parse(maxDateStr));
             mustBefore(minCalendar, maxCalendar);
@@ -72,41 +73,18 @@ public class CalendarStandard {
         typedArray.recycle();
     }
     
-    public int getMonthTotalCount() {
-        int minYear = minCalendar.get(Calendar.YEAR);
-        int maxYear = maxCalendar.get(Calendar.YEAR);
-        int minMonth = minCalendar.get(Calendar.MONTH);
-        int maxMonth = maxCalendar.get(Calendar.MONTH);
-        int disYear = maxYear - minYear;
-        if (disYear > 0) {
-            return disYear * 12 + maxMonth + 1;
-        } else {
-            return minMonth + 1;
-        }
+    protected abstract void invalidate();
+    
+    public Context getContext() {
+        return context;
     }
     
-    public Calendar getMonthCalendarByPosition(int position) {
-        Calendar tmpCalendar = newCalendar(minCalendar);
-        tmpCalendar.add(Calendar.MONTH, position);
-        if (tmpCalendar.after(maxCalendar)) {
-            tmpCalendar = newCalendar(maxCalendar);
-        }
-        return tmpCalendar;
+    public Locale getLocale() {
+        return locale;
     }
     
-    public void setMinCalendar(Calendar calendar) {
-        mustBefore(calendar, maxCalendar);
-        this.minCalendar = newCalendar(calendar);
-    }
-    
-    public void setMaxCalendar(Calendar calendar) {
-        mustBefore(minCalendar, calendar);
-        this.maxCalendar = newCalendar(calendar);
-    }
-    
-    public void setCurrentCalendar(Calendar calendar) {
-        clamp(minCalendar, calendar, maxCalendar);
-        this.curCalendar = newCalendar(calendar);
+    public Calendar getCurrentCalendar() {
+        return curCalendar;
     }
     
     public Calendar getMinCalendar() {
@@ -115,14 +93,6 @@ public class CalendarStandard {
     
     public Calendar getMaxCalendar() {
         return maxCalendar;
-    }
-    
-    public Calendar getCurrentCalendar() {
-        return curCalendar;
-    }
-    
-    public Context getContext() {
-        return context;
     }
     
     public Calendar newCalendar() {
