@@ -17,6 +17,9 @@ package com.soo.ify.request;
 import java.io.IOException;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 
 import com.soo.ify.cache.DiskCache;
 import com.soo.ify.cache.MemoryCache;
@@ -35,6 +38,19 @@ public class RequestHelper {
     
     public static HttpClient createHttpClient() throws RequestException {
         return new SooHttpClient();
+    }
+    
+    public static HttpClient createHttpClient(Scheme scheme) throws RequestException {
+        HttpClient httpClient = new SooHttpClient();
+        if (scheme == null) {
+            return httpClient;
+        } else {
+            ClientConnectionManager cm = httpClient.getConnectionManager();
+            SchemeRegistry schemeRegistry = cm.getSchemeRegistry();
+            schemeRegistry.register(scheme);
+        }
+        
+        return httpClient;
     }
     
     public static MemoryCache<String, byte[]> createMemoryCache(int maxCacheSize, final Keyer keyer) throws RequestException {

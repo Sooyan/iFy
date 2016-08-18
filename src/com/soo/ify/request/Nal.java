@@ -4,6 +4,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import android.content.ContentValues;
+import android.text.TextUtils;
 
 /**Net access locator
  * @author Soo
@@ -11,10 +12,14 @@ import android.content.ContentValues;
 public final class Nal {
     
     private final String host;
-    private final String port;
+    private String port;
     private final String nameSpace;
     private final String api;
     private ContentValues contentValues = new ContentValues();
+    
+    public Nal(String host, String nameSpace, String api) {
+        this(host, null, nameSpace, api);
+    }
     
     public Nal(String host, String port, String nameSpace, String api) {
         this.host = host;
@@ -73,7 +78,7 @@ public final class Nal {
         } else {
             result.append(host);
         }
-        if (port != null) {
+        if (!TextUtils.isEmpty(port)) {
             try {
                 int portValue = Integer.valueOf(port);
                 if (portValue <= 0) {

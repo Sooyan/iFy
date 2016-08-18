@@ -15,6 +15,7 @@
 package com.soo.ify.request;
 
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.scheme.Scheme;
 
 import android.content.Context;
 import android.os.Looper;
@@ -46,7 +47,7 @@ public final class RequestContext {
         MemoryCache<String, byte[]> memoryCache = RequestHelper.createMemoryCache(builder.maxMemoryCacheSize, builder.keyer);
         DiskCache<String, byte[]> diskCache = RequestHelper.createDiskCache(builder.diskCacheDir, builder.version,
                 builder.maxDiskCacheSize, builder.maxDiskCacheCycleLife, builder.keyer);
-        HttpClient httpClient = RequestHelper.createHttpClient();
+        HttpClient httpClient = RequestHelper.createHttpClient(builder.scheme);
         this.requestWorker = RequestHelper.createRequestWorker(memoryCache, diskCache, httpClient);
     }
     
@@ -98,6 +99,7 @@ public final class RequestContext {
         
         private int version;
         private Keyer keyer;
+        private Scheme scheme;
         
         private Context context;
         private String name;
@@ -160,6 +162,11 @@ public final class RequestContext {
         
         public Builder setKeyer(Keyer keyer) {
             this.keyer = keyer;
+            return this;
+        }
+        
+        public Builder setScheme(Scheme scheme) {
+            this.scheme = scheme;
             return this;
         }
         
