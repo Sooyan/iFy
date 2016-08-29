@@ -295,6 +295,7 @@ public class IndexView extends View {
         }
         
         Collections.sort(this.indexArray);
+        requestLayout();
         invalidate();
     }
     
@@ -323,6 +324,7 @@ public class IndexView extends View {
         }
         
         Collections.sort(this.indexArray);
+        requestLayout();
         invalidate();
     }
     
