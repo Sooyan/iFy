@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewConfigurationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -44,6 +45,46 @@ import com.soo.ify.R;
  */
 public class CirclePageIndicator extends View implements PageIndicator {
     private static final int INVALID_POINTER = -1;
+    
+    public interface ICyclePager {
+        
+        int getRealCount();
+    }
+    
+    static class Proxy {
+        
+        private PagerAdapter adapter;
+        
+        public Proxy(PagerAdapter adapter) {
+            this.adapter = adapter;
+        }
+        
+        public int getCount() {
+            if (adapter instanceof ICyclePager) {
+                return ((ICyclePager) adapter).getRealCount();
+            }
+            return adapter.getCount();
+        }
+        
+        public int measurePosition(int position) {
+            if (adapter instanceof ICyclePager) {
+                int realCount = ((ICyclePager) adapter).getRealCount();
+                if (realCount > 1) {
+                    return position % ((ICyclePager) adapter).getRealCount();
+                }
+            }
+            return position;
+        }
+        
+        public int makeMeasurePostion(int position) {
+            if (adapter instanceof ICyclePager) {
+                int realCount = ((ICyclePager) adapter).getRealCount();
+                int result = realCount * 500 + position;
+                return result > adapter.getCount() ? 0 : result;
+            }
+            return position;
+        }
+    }
 
     private float mRadius;
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
@@ -63,8 +104,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
     private float mLastMotionX = -1;
     private int mActivePointerId = INVALID_POINTER;
     private boolean mIsDragging;
-
-
+    
+    private Proxy proxy;
+    
     public CirclePageIndicator(Context context) {
         this(context, null);
     }
@@ -202,7 +244,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (mViewPager == null) {
             return;
         }
-        final int count = mViewPager.getAdapter().getCount();
+        final int count = proxy.getCount();
         if (count == 0) {
             return;
         }
@@ -283,7 +325,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (super.onTouchEvent(ev)) {
             return true;
         }
-        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
+        if ((mViewPager == null) || (proxy.getCount() == 0)) {
             return false;
         }
 
@@ -318,7 +360,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
                 if (!mIsDragging) {
-                    final int count = mViewPager.getAdapter().getCount();
+                    final int count = proxy.getCount();
                     final int width = getWidth();
                     final float halfWidth = width / 2f;
                     final float sixthWidth = width / 6f;
@@ -375,6 +417,8 @@ public class CirclePageIndicator extends View implements PageIndicator {
         }
         mViewPager = view;
         mViewPager.setOnPageChangeListener(this);
+        proxy = new Proxy(mViewPager.getAdapter());
+        
         invalidate();
     }
 
@@ -394,7 +438,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
         if (mViewPager == null) {
             throw new IllegalStateException("ViewPager has not been bound.");
         }
-        mViewPager.setCurrentItem(item, smoothScroll);
+        mViewPager.setCurrentItem(proxy.makeMeasurePostion(item), smoothScroll);
         mCurrentPage = item;
         invalidate();
     }
@@ -412,11 +456,15 @@ public class CirclePageIndicator extends View implements PageIndicator {
             mListener.onPageScrollStateChanged(state);
         }
     }
-
+    
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mCurrentPage = position;
-        mPageOffset = positionOffset;
+        mCurrentPage = proxy.measurePosition(position);
+        if (mCurrentPage == proxy.getCount() - 1) {
+            mPageOffset = 0;
+        } else {
+            mPageOffset = positionOffset;
+        }
         invalidate();
 
         if (mListener != null) {
@@ -427,8 +475,9 @@ public class CirclePageIndicator extends View implements PageIndicator {
     @Override
     public void onPageSelected(int position) {
         if (mSnap || mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-            mCurrentPage = position;
-            mSnapPage = position;
+            int tempPosition = proxy.measurePosition(position);
+            mCurrentPage = tempPosition;
+            mSnapPage = tempPosition;
             invalidate();
         }
 
@@ -442,11 +491,6 @@ public class CirclePageIndicator extends View implements PageIndicator {
         mListener = listener;
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View#onMeasure(int, int)
-     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mOrientation == HORIZONTAL) {
@@ -473,7 +517,7 @@ public class CirclePageIndicator extends View implements PageIndicator {
             result = specSize;
         } else {
             //Calculate the width according the views count
-            final int count = mViewPager.getAdapter().getCount();
+            final int count = proxy.getCount();
             result = (int)(getPaddingLeft() + getPaddingRight()
                     + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
             //Respect AT_MOST value if that was what is called for by measureSpec
@@ -557,6 +601,11 @@ public class CirclePageIndicator extends View implements PageIndicator {
                 return new SavedState[size];
             }
         };
+    }
+    
+//    
+    public int getScrollState() {
+        return mScrollState;
     }
 
 }
