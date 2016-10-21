@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
@@ -102,8 +103,8 @@ public class SimpleMultipartEntity2 implements HttpEntity {
         String boundary;
         
         public Builder() {
-            this.kvParts = new HashMap<String, String>();
-            this.fileParts = new HashMap<String, File>();
+            this.kvParts = new LinkedHashMap<String, String>();
+            this.fileParts = new LinkedHashMap<String, File>();
             
             final StringBuffer buf = new StringBuffer();
             final Random rand = new Random();
